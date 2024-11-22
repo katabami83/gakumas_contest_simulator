@@ -460,6 +460,30 @@ export const data = [
     limit: 1,
     plan: 'logic',
   },
+  {
+    id: 2111010,
+    name: 'ティーキャンディー',
+    trigger: 'after_play_card',
+    condition: 'card_type==active&指針==3',
+    effects: [
+      { type: 'score', value: 5 },
+      { type: 'heal', value: 1 },
+    ],
+    limit: 1,
+    plan: 'anomaly',
+  },
+  {
+    id: 2111011,
+    name: 'ティーキャンディー+',
+    trigger: 'after_play_card',
+    condition: 'card_type==active&指針==3',
+    effects: [
+      { type: 'score', value: 7 },
+      { type: 'heal', value: 3 },
+    ],
+    limit: 1,
+    plan: 'anomaly',
+  },
   // ### ##             ## ##   ##  ###  ### ##   ### ##    ## ##   ### ##   #### ##
   //  ##  ##           ##   ##  ##   ##   ##  ##   ##  ##  ##   ##   ##  ##  # ## ##
   //  ##  ##           ####     ##   ##   ##  ##   ##  ##  ##   ##   ##  ##    ##
@@ -697,11 +721,11 @@ export const data = [
   },
   {
     id: 2211010,
-    name: 'みんなの憧れ+',
+    name: 'みんなの憧れ',
     trigger: 'before_play_card',
     condition: '指針==4',
     effects: [
-      { type: 'score', value: 18 },
+      { type: 'score', value: 9 },
       { type: 'genki', value: 9 },
     ],
     limit: 1,
@@ -759,6 +783,16 @@ export const data = [
     ],
     limit: 2,
     plan: 'logic',
+  },
+  {
+    id: 3200200,
+    name: '小さい秋見つけた',
+    description: '',
+    trigger: 'start_turn',
+    condition: 'turn_type==dance&集中>=5',
+    effects: [{ type: 'score', value: 10 }],
+    limit: 2,
+    plan: 'sense',
   },
   // ### ##   ### ##    ## ##   ### ##   ##  ###   ## ##   ### ###
   //  ##  ##   ##  ##  ##   ##   ##  ##  ##   ##  ##   ##   ##  ##
@@ -818,6 +852,32 @@ export const data = [
     ],
     limit: 1,
     plan: 'logic',
+  },
+  {
+    id: 1300070,
+    name: 'はつぼし時計',
+    description: '',
+    trigger: 'start_turn',
+    condition: '全力値>=3',
+    effects: [
+      { type: 'status', target: 'スキルカード使用数追加', value: 1 },
+      { type: 'status', target: '全力値', value: 3 },
+    ],
+    limit: 1,
+    plan: 'anomaly',
+  },
+  {
+    id: 1300080,
+    name: 'はつぼしフィギュア',
+    description: '',
+    trigger: 'start_turn',
+    condition: '指針==3',
+    effects: [
+      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: 'スキルカード使用数追加', value: 1 },
+    ],
+    limit: 1,
+    plan: 'anomaly',
   },
   //  ## ##    ## ##   ### ##              ####   ### ##    ## ##   ####
   // ##   ##  ##   ##   ##  ##              ##     ##  ##  ##   ##   ##
@@ -1675,12 +1735,12 @@ export const data = [
   },
   {
     id: 2311010,
-    name: '新しい、私+',
+    name: '新しい、私',
     trigger: 'after_play_card',
     condition: 'card_type==active&指針==3',
     effects: [
-      { type: 'score', value: 12 },
-      { type: 'heal', value: 6 },
+      { type: 'score', value: 8 },
+      { type: 'heal', value: 4 },
     ],
     limit: 1,
     plan: 'anomaly',
@@ -1906,6 +1966,16 @@ export const data = [
   { id: 3300200, name: 'つやつやでふさふさ' },
   { id: 3300210, name: '会長の完璧な計画' },
   { id: 3300220, name: 'ごちそうさまでした' },
+  {
+    id: 3300230,
+    name: 'アイドルパワー測定機',
+    description: '',
+    trigger: 'start_turn',
+    condition: 'turn_type==dance&&指針==2',
+    effects: [{ type: 'heal', value: 5 }],
+    limit: 1,
+    plan: 'anomaly',
+  },
   //  ## ##    ## ##   ###  ##  #### ##  ### ###   ## ##   #### ##
   // ##   ##  ##   ##    ## ##  # ## ##   ##  ##  ##   ##  # ## ##
   // ##       ##   ##   # ## #    ##      ##      ####       ##
