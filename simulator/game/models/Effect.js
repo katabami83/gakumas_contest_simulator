@@ -33,5 +33,7 @@ export default class Effect extends Clone {
       /** 特殊オプション @type {Array<EffectOption>} */
       this.options = effect.options?.map((effectOption) => new EffectOption(effectOption));
     }
+    /** 回数 @type {Number} */
+    this.times = effect.times ?? 1;
   }
 }

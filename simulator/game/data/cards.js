@@ -91,10 +91,7 @@ export const data = [
     plan: 'sense',
     cost: { type: 'hp', value: -7 },
     condition: '',
-    effects: [
-      { type: 'score', value: 8 },
-      { type: 'score', value: 8 },
-    ],
+    effects: [{ type: 'score', value: 8, times: 2 }],
     limit: 1,
     card_cost: 0,
     allow_duplicate: true,
@@ -106,10 +103,7 @@ export const data = [
     plan: 'sense',
     cost: { type: 'hp', value: -5 },
     condition: '',
-    effects: [
-      { type: 'score', value: 10 },
-      { type: 'score', value: 10 },
-    ],
+    effects: [{ type: 'score', value: 10, times: 2 }],
     limit: 1,
     card_cost: 0,
     allow_duplicate: true,
@@ -1082,8 +1076,7 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '指針', value: 3 },
-      { type: 'score', value: 6 },
-      { type: 'score', value: 6 },
+      { type: 'score', value: 6, times: 2 },
     ],
     limit: 1,
     card_cost: 45,
@@ -1098,8 +1091,7 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '指針', value: 3 },
-      { type: 'score', value: 7 },
-      { type: 'score', value: 7 },
+      { type: 'score', value: 7, times: 2 },
     ],
     limit: 1,
     card_cost: 60,
@@ -2018,10 +2010,7 @@ export const data = [
     plan: 'sense',
     cost: { type: 'hp', value: -6 },
     condition: '',
-    effects: [
-      { type: 'score', value: 12 },
-      { type: 'score', value: 12 },
-    ],
+    effects: [{ type: 'score', value: 12, times: 2 }],
     limit: 1,
     card_cost: 0,
     allow_duplicate: false,
@@ -2249,8 +2238,7 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '指針', value: 3 },
-      { type: 'score', value: 2 },
-      { type: 'score', value: 2 },
+      { type: 'score', value: 2, times: 2 },
     ],
     limit: 1,
     card_cost: 0,
@@ -2265,8 +2253,7 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '指針', value: 3 },
-      { type: 'score', value: 4 },
-      { type: 'score', value: 4 },
+      { type: 'score', value: 4, times: 2 },
     ],
     limit: 1,
     card_cost: 0,
@@ -2917,10 +2904,7 @@ export const data = [
     plan: 'anomaly',
     cost: { type: 'hp', value: -2 },
     condition: '指針>0',
-    effects: [
-      { type: 'score', value: 8 },
-      { type: 'score', value: 8 },
-    ],
+    effects: [{ type: 'score', value: 8, times: 2 }],
     limit: 1,
     card_cost: 105,
     allow_duplicate: true,
@@ -2932,10 +2916,7 @@ export const data = [
     plan: 'anomaly',
     cost: { type: 'hp', value: -1 },
     condition: '指針>0',
-    effects: [
-      { type: 'score', value: 10 },
-      { type: 'score', value: 10 },
-    ],
+    effects: [{ type: 'score', value: 10, times: 2 }],
     limit: 1,
     card_cost: 141,
     allow_duplicate: true,
@@ -3045,10 +3026,7 @@ export const data = [
         limit: -1,
       },
     ],
-    effects: [
-      { type: 'score', value: 6 },
-      { type: 'score', value: 6 },
-    ],
+    effects: [{ type: 'score', value: 6, times: 2 }],
     limit: 1,
     card_cost: 105,
     allow_duplicate: true,
@@ -3068,10 +3046,7 @@ export const data = [
         limit: -1,
       },
     ],
-    effects: [
-      { type: 'score', value: 6 },
-      { type: 'score', value: 6 },
-    ],
+    effects: [{ type: 'score', value: 6, times: 2 }],
     limit: 1,
     card_cost: 141,
     allow_duplicate: true,
@@ -4744,8 +4719,7 @@ export const data = [
     cost: { type: 'hp', value: -5 },
     condition: '',
     effects: [
-      { type: 'score', value: 4 },
-      { type: 'score', value: 4 },
+      { type: 'score', value: 4, times: 2 },
       { type: 'upgrade', value: 0, delay: 1 },
     ],
     limit: 1,
@@ -4760,8 +4734,7 @@ export const data = [
     cost: { type: 'hp', value: -4 },
     condition: '',
     effects: [
-      { type: 'score', value: 6 },
-      { type: 'score', value: 6 },
+      { type: 'score', value: 6, times: 2 },
       { type: 'upgrade', value: 0, delay: 1 },
     ],
     limit: 1,
@@ -4947,8 +4920,7 @@ export const data = [
     cost: { type: 'status', target: '好調', value: -1 },
     condition: '',
     effects: [
-      { type: 'score', value: 3 },
-      { type: 'score', value: 3 },
+      { type: 'score', value: 3, times: 2 },
       { type: 'status', target: '集中', value: 4 },
     ],
     limit: -1,
@@ -4963,8 +4935,7 @@ export const data = [
     cost: { type: 'status', target: '好調', value: -1 },
     condition: '',
     effects: [
-      { type: 'score', value: 4 },
-      { type: 'score', value: 4 },
+      { type: 'score', value: 4, times: 2 },
       { type: 'status', target: '集中', value: 6 },
     ],
     limit: -1,
@@ -5374,8 +5345,7 @@ export const data = [
     effects: [
       { type: 'status', target: '全力値', value: 3 },
       { type: 'status', target: '指針', value: 2, delay: 1 },
-      { type: 'score', value: 20, condition: '指針==4' },
-      { type: 'score', value: 20, condition: '指針==4' },
+      { type: 'score', value: 20, condition: '指針==4', times: 2 },
     ],
     limit: 1,
     card_cost: 150,
@@ -5391,8 +5361,7 @@ export const data = [
     effects: [
       { type: 'status', target: '全力値', value: 4 },
       { type: 'status', target: '指針', value: 2, delay: 1 }, // 2段階
-      { type: 'score', value: 25, condition: '指針==4' },
-      { type: 'score', value: 25, condition: '指針==4' },
+      { type: 'score', value: 25, condition: '指針==4', times: 2 },
     ],
     limit: 1,
     card_cost: 150,
@@ -5407,8 +5376,7 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '指針', value: 3 },
-      { type: 'score', value: 14 },
-      { type: 'score', value: 14 },
+      { type: 'score', value: 14, times: 2 },
       { type: 'status', target: '指針', value: 2, delay: 1 },
     ],
     limit: 1,
@@ -5424,8 +5392,7 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '指針', value: 3 }, // 二段階
-      { type: 'score', value: 19 },
-      { type: 'score', value: 19 },
+      { type: 'score', value: 19, times: 2 },
       { type: 'status', target: '指針', value: 2, delay: 1 }, // 二段階
     ],
     limit: 1,
@@ -6447,11 +6414,7 @@ export const data = [
     plan: 'sense',
     cost: { type: 'hp', value: -8 },
     condition: '',
-    effects: [
-      { type: 'score', value: 9 },
-      { type: 'score', value: 9 },
-      { type: 'score', value: 9 },
-    ],
+    effects: [{ type: 'score', value: 9, times: 3 }],
     limit: 1,
     card_cost: 0,
     allow_duplicate: false,
@@ -6463,11 +6426,7 @@ export const data = [
     plan: 'sense',
     cost: { type: 'hp', value: -8 },
     condition: '',
-    effects: [
-      { type: 'score', value: 14 },
-      { type: 'score', value: 14 },
-      { type: 'score', value: 14 },
-    ],
+    effects: [{ type: 'score', value: 14, times: 3 }],
     limit: 1,
     card_cost: 0,
     allow_duplicate: false,
@@ -6693,8 +6652,7 @@ export const data = [
     cost: { type: 'hp', value: -5 },
     condition: '',
     effects: [
-      { type: 'score', value: 8 },
-      { type: 'score', value: 8 },
+      { type: 'score', value: 8, times: 2 },
       { type: 'status', target: '集中', value: 2, condition: '集中>=3' },
     ],
     limit: 1,
@@ -6709,8 +6667,7 @@ export const data = [
     cost: { type: 'hp', value: -5 },
     condition: '',
     effects: [
-      { type: 'score', value: 10 },
-      { type: 'score', value: 10 },
+      { type: 'score', value: 10, times: 2 },
       { type: 'status', target: '集中', value: 4, condition: '集中>=3' },
     ],
     limit: 1,
@@ -6725,8 +6682,7 @@ export const data = [
     cost: { type: 'hp', value: -4 },
     condition: '',
     effects: [
-      { type: 'score', value: 7 },
-      { type: 'score', value: 7 },
+      { type: 'score', value: 7, times: 2 },
       { type: 'score', value: 7, condition: '集中>=6' },
     ],
     limit: 1,
@@ -6741,8 +6697,7 @@ export const data = [
     cost: { type: 'hp', value: -3 },
     condition: '',
     effects: [
-      { type: 'score', value: 9 },
-      { type: 'score', value: 9 },
+      { type: 'score', value: 9, times: 2 },
       { type: 'score', value: 9, condition: '集中>=6' },
     ],
     limit: 1,
@@ -7087,7 +7042,7 @@ export const data = [
   },
   {
     id: 4211010,
-    name: '一番高い星+',
+    name: '一番高い星',
     type: 'active',
     plan: 'anomaly',
     cost: { type: 'hp', value: -6 },
@@ -7105,8 +7060,7 @@ export const data = [
     ],
     effects: [
       { type: 'status', target: '指針', value: 3 },
-      { type: 'score', value: 3 },
-      { type: 'score', value: 3 },
+      { type: 'score', value: 3, times: 2 },
     ],
     limit: 1,
     card_cost: 0,
@@ -7132,8 +7086,7 @@ export const data = [
     ],
     effects: [
       { type: 'status', target: '指針', value: 3 },
-      { type: 'score', value: 6 },
-      { type: 'score', value: 6 },
+      { type: 'score', value: 6, times: 2 },
     ],
     limit: 1,
     card_cost: 0,

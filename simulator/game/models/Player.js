@@ -319,7 +319,7 @@ export default class Player extends Clone {
    * @returns
    */
   applyEffect(effect, sourceType) {
-    const { type, target, options, delay, condition } = effect;
+    const { type, target, options, delay, condition, times } = effect;
 
     if (delay) {
       this.status.addDelayEffect('予約効果', this.turnManager.currentTurn + delay, effect);
@@ -334,17 +334,22 @@ export default class Player extends Clone {
 
     if (type == 'score') {
       const score = this.score;
-      this.score += Math.ceil(value * this.parameter.getScale(this.turnManager.currentTurnType));
-      this.log.add('effect', null, `スコア：${score}→${this.score}(${this.score - score})`);
-      if (Number.isNaN(this.score)) {
-        console.log(
-          this,
-          effect,
-          sourceType,
-          value,
-          this.parameter.get(this.turnManager.currentTurnType)
+      for (let i = 0; i < (times ?? 1); i++) {
+        const effectValue = Math.ceil(
+          value * this.parameter.getScale(this.turnManager.currentTurnType)
         );
-        throw new Error('era-');
+        this.score += effectValue;
+        this.log.add('effect', null, `スコア：${score}→${this.score}(${effectValue})`);
+        if (Number.isNaN(this.score)) {
+          console.log(
+            this,
+            effect,
+            sourceType,
+            value,
+            this.parameter.get(this.turnManager.currentTurnType)
+          );
+          throw new Error('era-');
+        }
       }
       return;
     }

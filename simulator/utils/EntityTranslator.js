@@ -248,7 +248,7 @@ export default class EntityTranslator {
     }
     return `${delay}ターン後、`;
   }
-  static translateEffect({ type, target, value, condition, delay, options }) {
+  static translateEffect({ type, target, value, condition, delay, options, times }) {
     const optionTexts = {
       increase_by_factor: '',
       'increase_by_factor-1': '',
@@ -258,6 +258,7 @@ export default class EntityTranslator {
     const delayText = this.translateEffectDelay(delay);
     const effectType = this.translateEffectType(type, target);
     const valueText = this.translateEffectValue(value, options);
+    const timesValue = times ? `（${times}回）` : '';
     if (options) {
       options.forEach(({ type, target, value }) => {
         if (type == 'increase_by_factor') {
@@ -280,12 +281,12 @@ export default class EntityTranslator {
     if (optionTexts['increase_by_percentage']) {
       return `${conditionText}${conditionText ? 'の場合、' : ''}${delayText}${
         optionTexts['increase_by_percentage']
-      }${optionTexts['increase_by_factor']}${optionTexts['increase_by_factor-1']}`;
+      }${optionTexts['increase_by_factor']}${optionTexts['increase_by_factor-1']}${timesValue}`;
     }
     return `${conditionText}${
       conditionText ? 'の場合、' : ''
     }${delayText}${effectType}${valueText}${optionTexts['increase_by_factor']}${
       optionTexts['increase_by_factor-1']
-    }`;
+    }${timesValue}`;
   }
 }

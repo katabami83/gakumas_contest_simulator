@@ -2386,10 +2386,7 @@ export const data = [
     description: '',
     trigger: 'before_play_card',
     condition: 'current_turn_card_play_count_multiple_of==2',
-    effects: [
-      { type: 'score', value: 2 },
-      { type: 'score', value: 2 },
-    ],
+    effects: [{ type: 'score', value: 2, times: 2 }],
     limit: -1,
     plan: 'free',
   },
@@ -2426,10 +2423,7 @@ export const data = [
     description: '',
     trigger: 'before_play_card',
     condition: 'current_turn_card_play_count_multiple_of==2',
-    effects: [
-      { type: 'score', value: 2 },
-      { type: 'score', value: 2 },
-    ],
+    effects: [{ type: 'score', value: 2, times: 2 }],
     limit: -1,
     plan: 'free',
   },
