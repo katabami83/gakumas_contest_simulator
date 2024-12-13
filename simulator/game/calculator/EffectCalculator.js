@@ -42,33 +42,38 @@ export default class EffectCalculator {
     }
 
     if (effect.type == 'score') {
-      const concentration_coef = player.status.getValue('集中');
+      const concentration_coef = player.status.getValue('集中') + player.status.getValue('熱意');
       const goodcondition_coef = player.status.has('好調') ? 1.5 : 1;
       const badcondition_coef = player.status.has('不調') ? 0.67 : 1;
       const greatcondition_coef = player.status.has('絶好調')
         ? player.status.getValue('好調') * 0.1
         : 0;
-      const guideline_parameter_rate_increased_coef = (() => {
-        switch (player.status.getValue('指針')) {
-          case 0:
-          case 1:
-            return 0;
-          case 2:
-            return -50;
-          case 3:
-            return 100;
-          case 4:
-            return 200;
-        }
-      })();
-      const parameter_rate_increased_coef =
+      const guideline_parameter_rate_increased_coef =
         1 +
-        (player.status.getValue('パラメータ上昇量増加') + guideline_parameter_rate_increased_coef) /
+        (() => {
+          switch (player.status.getValue('指針')) {
+            case 0:
+              return 0;
+            case 1:
+              return -50;
+            case 2:
+              return -75;
+            case 3:
+              return 100;
+            case 4:
+              return 150;
+            case 5:
+              return 200;
+          }
+        })() /
           100;
+      const parameter_rate_increased_coef =
+        1 + player.status.getValue('パラメータ上昇量増加') / 100;
 
       const adjust_value = Math.ceil(
         Math.ceil((base_value + concentration_coef) * (goodcondition_coef + greatcondition_coef)) *
           badcondition_coef *
+          guideline_parameter_rate_increased_coef *
           parameter_rate_increased_coef
       );
       return adjust_value;
@@ -91,13 +96,16 @@ export default class EffectCalculator {
         const guideline_hp_comsumption = (() => {
           switch (player.status.getValue('指針')) {
             case 0:
-            case 1:
               return 0;
-            case 2:
+            case 1:
               return -50;
+            case 2:
+              return -75;
             case 3:
               return 100;
             case 4:
+              return 100;
+            case 5:
               return 0;
           }
         })();

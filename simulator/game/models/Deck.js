@@ -3,6 +3,7 @@ import { Clone, createRange, RandomGenerator } from '../../utils/helpers.js';
 import Card from './Card.js';
 import Player from './Player.js';
 import Condition from './Condition.js';
+import { id } from 'vuetify/locale';
 
 /**
  * カード管理クラス
@@ -17,6 +18,8 @@ export default class Deck extends Clone {
     super(['random']);
     /** デッキ内全カード @type {Array<Card>} */
     this.cards = cardIdList.map((id) => new Card(id));
+    /** 保持のインデックス @type {Array<Number>} */
+    this.retainIndexes = [];
     /** 山札のインデックス @type {Array<Number>} */
     this.drawPileIndexes = [];
     /** 手札のインデックス @type {Array<Number>} */
@@ -32,6 +35,15 @@ export default class Deck extends Clone {
 
   setRandom(random) {
     this.random = random;
+  }
+
+  searchIndexByName(name) {
+    for (let i = 0; i < this.cards.length; i++) {
+      if (~this.cards[i].name.indexOf(name)) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   /**
@@ -57,29 +69,7 @@ export default class Deck extends Clone {
         const targetCard = this.cards[target.cardIndex];
         log.add('use', 'grow', targetCard.name);
         target.effects.forEach((effect) => {
-          if (effect.type == 'score') {
-            targetCard.effects.forEach((cardEffect, index) => {
-              if (cardEffect.type == 'score') {
-                log.add(
-                  'effect',
-                  null,
-                  `スコア：${targetCard.effects[index].value}→${
-                    targetCard.effects[index].value + effect.value
-                  }(${effect.value})`
-                );
-                targetCard.effects[index].value += effect.value;
-              }
-            });
-          } else if (effect.type == 'cost') {
-            log.add(
-              'effect',
-              null,
-              `コスト：${targetCard.cost.value}→${
-                targetCard.cost.value - effect.value
-              }(${-effect.value})`
-            );
-            targetCard.cost.value -= effect.value;
-          }
+          this.reinforceCard(target.cardIndex, effect.type, effect.value, log);
         });
         log.add('end');
         if (target.use()) {
@@ -90,6 +80,59 @@ export default class Deck extends Clone {
       }
     }
     this.growthEffectMap.set(trigger, remains);
+  }
+
+  reinforceCards(position, type, value) {
+    let targetCardIndexes = [];
+    if (position == 'handCard') {
+      targetCardIndexes = this.handCardIndexes;
+    } else if (position == 'all') {
+      targetCardIndexes = [].concat(
+        this.handCardIndexes,
+        this.discardPileIndexes,
+        this.drawPileIndexes,
+        this.retainIndexes
+      );
+    }
+    targetCardIndexes.forEach((index) => this.reinforceCard(index, type, value));
+  }
+
+  reinforceCard(index, type, value, log) {
+    const targetCard = this.cards[index];
+    if (type == 'add_score') {
+      targetCard.effects.forEach((cardEffect, index) => {
+        if (cardEffect.type == 'score') {
+          log?.add(
+            'effect',
+            null,
+            `スコア上昇量：${targetCard.effects[index].value}→${
+              targetCard.effects[index].value + value
+            }(${value})`
+          );
+          targetCard.effects[index].value += value;
+        }
+      });
+    } else if (type == 'reduce_cost') {
+      log?.add(
+        'effect',
+        null,
+        `コスト：${targetCard.cost.value}→${targetCard.cost.value + value}(${value})`
+      );
+      targetCard.cost.value += value;
+    } else if (type == 'add_score_times') {
+      targetCard.effects.forEach((cardEffect, index) => {
+        if (cardEffect.type == 'score') {
+          log?.add(
+            'effect',
+            null,
+            `スコア発動回数：${targetCard.effects[index].times}→${
+              targetCard.effects[index].times + value
+            }(${value})`
+          );
+          targetCard.effects[index].times += value;
+        }
+      });
+    }
   }
 
   /**
@@ -290,6 +333,64 @@ export default class Deck extends Clone {
   discardAllHandCards() {
     this.handCardIndexes.forEach((index) => this.discardPileIndexes.push(index));
     this.handCardIndexes = [];
+  }
+
+  retainCard(index) {
+    const array = [].concat(
+      this.handCardIndexes.map((value, index) => {
+        return { index: value, pos: 'hand', posIndex: index };
+      }),
+      this.discardPileIndexes.map((value, index) => {
+        return { index: value, pos: 'discard', posIndex: index };
+      }),
+      this.drawPileIndexes.map((value, index) => {
+        return { index: value, pos: 'draw', posIndex: index };
+      }),
+      this.retainIndexes.map((value, index) => {
+        return { index: value, pos: 'retain', posIndex: index };
+      })
+    );
+    let indexPosition = null;
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].index == index) {
+        indexPosition = array[i];
+      }
+    }
+    if (!indexPosition) {
+      return;
+    }
+    let target = null;
+    switch (indexPosition.pos) {
+      case 'draw':
+        target = this.drawPileIndexes;
+        break;
+      case 'hand':
+        target = this.handCardIndexes;
+        break;
+      case 'discard':
+        target = this.discardPileIndexes;
+        break;
+      case 'exhausted':
+        target = this.exhaustedPileIndexes;
+        break;
+      case 'retain':
+        target = this.retainIndexes;
+        break;
+    }
+    if (target.splice(indexPosition.posIndex, 1)[0] != index) {
+      throw new Error(`Removed index doesnot match moved index`);
+    }
+    this.retainIndexes.push(index);
+    if (this.retainIndexes.length > 2) {
+      const index = this.retainIndexes.shift();
+      this.discardPileIndexes.push(index);
+    }
+  }
+
+  retainCards(indexes) {
+    for (let i = 0; i < indexes.length; i++) {
+      this.retainCard(indexes[i]);
+    }
   }
 
   /**

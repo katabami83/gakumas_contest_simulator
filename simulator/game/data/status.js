@@ -51,7 +51,13 @@ export const data = [
     isDecay: true,
     isDecay_amount: 'all',
   },
-
+  {
+    id: 1000060,
+    name: '次に使用したスキルカードの消費体力を0にする',
+    valueType: 'number',
+    type: 'buff',
+    isDecay: false,
+  },
   {
     id: 1100010,
     name: '好調',
@@ -97,18 +103,31 @@ export const data = [
   },
   {
     id: 1300010,
-    name: '全力値', // おそらくマントラみたいなもの？
-    valueType: 'number',
+    name: '指針',
+    valueType: 'toggle',
     type: 'buff',
     isDecay: false,
   },
   {
     id: 1300011,
+    name: '指針固定',
+    valueType: 'number',
+    type: 'debuff',
+    isDecay: true,
+  },
+  {
+    id: 1300020,
+    name: '全力値',
+    valueType: 'number',
+    type: 'buff',
+    isDecay: false,
+  },
+  {
+    id: 1300030,
     name: '熱意',
     valueType: 'number',
     type: 'buff',
-    isDecay: true,
-    isDecay_amount: 'all',
+    isDecay: false,
   },
 
   {
@@ -236,6 +255,22 @@ export const data = [
     condition: '',
     effects: [{ type: 'score', value: 4 }],
     isDecay: true,
+  },
+  {
+    id: 1110040,
+    name: '以降、ターン開始時、好調2ターン',
+    valueType: 'number',
+    type: 'buff',
+    trigger: 'start_turn',
+    condition: '',
+    effects: [
+      {
+        type: 'status',
+        target: '好調',
+        value: 2,
+      },
+    ],
+    isDecay: false,
   },
 
   {
@@ -367,8 +402,8 @@ export const data = [
     name: '好印象効果のスキルカード使用後、好印象の30%分のパラメータ',
     valueType: 'number',
     type: 'buff',
-    trigger: 'card_contains_effect==好印象',
-    condition: '',
+    trigger: 'after_play_card',
+    condition: 'card_contains_effect==好印象',
     effects: [
       {
         type: 'score',
@@ -389,8 +424,8 @@ export const data = [
     name: '好印象効果のスキルカード使用後、好印象の50%分のパラメータ',
     valueType: 'number',
     type: 'buff',
-    trigger: 'card_contains_effect==好印象',
-    condition: '',
+    trigger: 'after_play_card',
+    condition: 'card_contains_effect==好印象',
     effects: [
       {
         type: 'score',
@@ -404,6 +439,16 @@ export const data = [
         ],
       },
     ],
+    isDecay: false,
+  },
+  {
+    id: 1310010,
+    name: '以降、ターン開始時、いずれかの指針の場合、すべてのスキルカードのパラメータ値増加+4',
+    valueType: 'number',
+    type: 'buff',
+    trigger: 'start_turn',
+    condition: '指針!=0',
+    effects: [{ type: 'reinforcement', target: 'すべてのパラメータ値増加', value: 4 }],
     isDecay: false,
   },
 
@@ -427,13 +472,6 @@ export const data = [
         ],
       },
     ],
-    isDecay: false,
-  },
-  {
-    id: 9210020,
-    name: '指針',
-    valueType: 'toggle',
-    type: 'buff',
     isDecay: false,
   },
 ];

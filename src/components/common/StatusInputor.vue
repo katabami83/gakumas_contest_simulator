@@ -43,7 +43,7 @@
 
 <script setup>
 import { onMounted, ref, watchEffect, computed, watch } from 'vue';
-import { inputStatus, status, criteria } from '@/store/store.js';
+import { inputStatus, status, criteria, paramCalcType } from '@/store/store.js';
 import ParameterCalculator from '/simulator/game/calculator/ParameterCalculator.js';
 
 onMounted(() => {
@@ -51,7 +51,8 @@ onMounted(() => {
     const adjustedStatus = ParameterCalculator.get(
       [inputStatus.value.vocal, inputStatus.value.dance, inputStatus.value.visual],
       [criteria.value.vocal, criteria.value.dance, criteria.value.visual],
-      Number(inputStatus.value.supportBonus) / 100
+      Number(inputStatus.value.supportBonus) / 100,
+      paramCalcType.value
     );
     status.value.vocal = adjustedStatus[0];
     status.value.dance = adjustedStatus[1];

@@ -78,10 +78,24 @@ export class EvaluationCalculator {
       case '消費体力増加':
       case '元気増加無効':
       case '消費体力追加':
+      case '指針固定':
         return -100;
+
       case '指針':
+        if (status.value == 1) {
+          return 0;
+        } else if (status.value == 2) {
+          return 0;
+        } else if (status.value == 3) {
+          return 0;
+        } else if (status.value == 4) {
+          return 0;
+        } else if (status.value == 5) {
+          return 0;
+        }
       case '熱意':
       case '全力値':
+      case '次に使用したスキルカードの消費体力を0にする':
         return 0;
       default:
         console.log(`${status.name}がないよ`);
@@ -125,6 +139,20 @@ export class EvaluationCalculator {
           )
           .map(
             (turnType) => player.parameter.getScale(turnType) * (4 + player.status.getValue('集中'))
+          )
+          .reduce((total, current) => total + current, 0);
+      case '以降、ターン開始時、好調2ターン':
+        return player.turnManager.turnTypeList
+          .slice(player.turnManager.currentTurn)
+          .map(
+            (turnType, i) =>
+              player.parameter.getScale(turnType) *
+              (15 + player.status.getValue('集中')) *
+              (Math.log(
+                Math.min(player.turnManager.remainTurn, player.status.getValue('好調') + i * 2) +
+                  0.01
+              ) -
+                Math.log(0.01))
           )
           .reduce((total, current) => total + current, 0);
       case 'アクティブスキルカード使用時集中+1':
@@ -180,6 +208,13 @@ export class EvaluationCalculator {
           .slice(player.turnManager.currentTurn)
           .map((turnType, i) => player.parameter.getScale(turnType) * (i + 1))
           .reduce((total, current) => total + current, 0);
+      case '以降、ターン開始時、いずれかの指針の場合、すべてのスキルカードのパラメータ値増加+4':
+        return (
+          player.turnManager.turnTypeList
+            .slice(player.turnManager.currentTurn)
+            .map((turnType) => player.parameter.getScale(turnType) * 4)
+            .reduce((total, current) => total + current, 0) * 40
+        );
       case '好印象効果':
         return 0;
       case '予約効果':

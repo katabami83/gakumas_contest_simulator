@@ -174,6 +174,16 @@ export default class StatusEffectManager extends Clone {
         }
       }
     }
+    // 熱意
+    const zeal = this.getValue('熱意');
+    if (zeal > 0) {
+      this.reduce('熱意', zeal);
+    }
+    // 全力解除
+    const guideline = this.getValue('指針');
+    if (guideline == 5) {
+      this.add('指針', 0);
+    }
   }
 
   /**

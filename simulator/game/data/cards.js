@@ -248,8 +248,8 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '全力値', value: 1 },
-      { type: 'retain', target: '自身', value: 1, condition: '指針==2' },
-      { type: 'score', value: 25, condition: '指針==4' },
+      { type: 'retain', target: '自身', value: 1, condition: '指針==1|指針==2' },
+      { type: 'score', value: 25, condition: '指針==5' },
     ],
     limit: 1,
     card_cost: 0,
@@ -264,8 +264,8 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '全力値', value: 1 },
-      { type: 'retain', target: '自身', value: 1, condition: '指針==2' },
-      { type: 'score', value: 25, condition: '指針==4' },
+      { type: 'retain', target: '自身', value: 1, condition: '指針==1|指針==2' },
+      { type: 'score', value: 25, condition: '指針==5' },
     ],
     limit: 1,
     card_cost: 0,
@@ -453,7 +453,7 @@ export const data = [
     cost: { type: 'hp', value: -2 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'genki', value: 2 },
     ],
     limit: -1,
@@ -468,7 +468,7 @@ export const data = [
     cost: { type: 'hp', value: -2 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'genki', value: 6 },
     ],
     limit: -1,
@@ -933,7 +933,7 @@ export const data = [
       { type: 'status', target: '全力値', value: 2 },
     ],
     limit: 1,
-    card_cost: 45,
+    card_cost: 30,
     allow_duplicate: true,
   },
   {
@@ -948,7 +948,7 @@ export const data = [
       { type: 'status', target: '全力値', value: 3 },
     ],
     limit: 1,
-    card_cost: 60,
+    card_cost: 39,
     allow_duplicate: true,
   },
   {
@@ -963,7 +963,7 @@ export const data = [
       { type: 'score', value: 9 },
     ],
     limit: 1,
-    card_cost: 45,
+    card_cost: 30,
     allow_duplicate: true,
   },
   {
@@ -978,7 +978,7 @@ export const data = [
       { type: 'score', value: 18 },
     ],
     limit: 1,
-    card_cost: 60,
+    card_cost: 39,
     allow_duplicate: true,
   },
   {
@@ -990,7 +990,7 @@ export const data = [
     condition: '',
     effects: [{ type: 'score', value: 15 }],
     limit: 1,
-    card_cost: 45,
+    card_cost: 30,
     allow_duplicate: true,
   },
   {
@@ -1002,7 +1002,7 @@ export const data = [
     condition: '',
     effects: [{ type: 'score', value: 23 }],
     limit: 1,
-    card_cost: 45,
+    card_cost: 39,
     allow_duplicate: true,
   },
   {
@@ -1014,7 +1014,7 @@ export const data = [
     condition: '',
     effects: [
       { type: 'score', value: 8 },
-      { type: 'status', target: '全力値', value: 3, condition: '指針==3' },
+      { type: 'status', target: '全力値', value: 3, condition: '指針==3|指針==4' },
     ],
     limit: 1,
     card_cost: 45,
@@ -1029,7 +1029,7 @@ export const data = [
     condition: '',
     effects: [
       { type: 'score', value: 10 },
-      { type: 'status', target: '全力値', value: 4, condition: '指針==3' },
+      { type: 'status', target: '全力値', value: 4, condition: '指針==3|指針==4' },
     ],
     limit: 1,
     card_cost: 60,
@@ -1044,8 +1044,8 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '全力値', value: 2 },
-      { type: 'retain', target: '自身', value: 1, condition: '指針==2' },
-      { type: 'score', value: 20, condition: '指針==4' },
+      { type: 'retain', target: '自身', value: 1, condition: '指針==1|指針==2' },
+      { type: 'score', value: 20, condition: '指針==5' },
     ],
     limit: -1,
     card_cost: 45,
@@ -1060,8 +1060,8 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '全力値', value: 2 },
-      { type: 'retain', target: '自身', value: 1, condition: '指針==2' },
-      { type: 'score', value: 35, condition: '指針==4' },
+      { type: 'retain', target: '自身', value: 1, condition: '指針==1|指針==2' },
+      { type: 'score', value: 35, condition: '指針==5' },
     ],
     limit: -1,
     card_cost: 60,
@@ -1517,11 +1517,11 @@ export const data = [
     cost: { type: 'hp', value: -3 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'genki', value: 7 },
     ],
     limit: 1,
-    card_cost: 45,
+    card_cost: 30,
     allow_duplicate: true,
   },
   {
@@ -1532,11 +1532,11 @@ export const data = [
     cost: { type: 'hp', value: -2 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'genki', value: 10 },
     ],
     limit: 1,
-    card_cost: 60,
+    card_cost: 39,
     allow_duplicate: true,
   },
   {
@@ -1549,7 +1549,7 @@ export const data = [
     effects: [
       { type: 'genki', value: 5 },
       { type: 'status', target: '全力値', value: 2 },
-      { type: 'status', target: '指針', value: 2, condition: '全力値>=1' },
+      { type: 'status', target: '指針', value: 1, condition: '全力値>=1' },
     ],
     limit: 1,
     card_cost: 45,
@@ -1565,7 +1565,7 @@ export const data = [
     effects: [
       { type: 'genki', value: 6 },
       { type: 'status', target: '全力値', value: 3 },
-      { type: 'status', target: '指針', value: 2, condition: '全力値>=1' },
+      { type: 'status', target: '指針', value: 1, condition: '全力値>=1' },
     ],
     limit: 1,
     card_cost: 60,
@@ -1579,9 +1579,9 @@ export const data = [
     cost: { type: 'hp', value: -2 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'genki', value: 2 },
-      { type: 'status', target: '全力値', value: 3, condition: '指針==3' },
+      { type: 'status', target: '全力値', value: 3, condition: '指針==3|指針==4' },
     ],
     limit: 1,
     card_cost: 45,
@@ -1595,9 +1595,9 @@ export const data = [
     cost: { type: 'hp', value: -2 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'genki', value: 4 },
-      { type: 'status', target: '全力値', value: 4, condition: '指針==3' },
+      { type: 'status', target: '全力値', value: 4, condition: '指針==3|指針==4' },
     ],
     limit: 1,
     card_cost: 60,
@@ -2849,7 +2849,7 @@ export const data = [
       { type: 'score', value: 12 },
     ],
     limit: -1,
-    card_cost: 105,
+    card_cost: 75,
     allow_duplicate: true,
   },
   {
@@ -2864,7 +2864,7 @@ export const data = [
       { type: 'score', value: 22 },
     ],
     limit: -1,
-    card_cost: 141,
+    card_cost: 102,
     allow_duplicate: true,
   },
   {
@@ -2879,7 +2879,7 @@ export const data = [
       { type: 'status', target: '全力値', value: 3 },
     ],
     limit: -1,
-    card_cost: 105,
+    card_cost: 75,
     allow_duplicate: true,
   },
   {
@@ -2894,7 +2894,7 @@ export const data = [
       { type: 'status', target: '全力値', value: 4 },
     ],
     limit: -1,
-    card_cost: 141,
+    card_cost: 102,
     allow_duplicate: true,
   },
   {
@@ -2927,7 +2927,7 @@ export const data = [
     type: 'active',
     plan: 'anomaly',
     cost: { type: 'hp', value: -1 },
-    condition: '指針==4',
+    condition: '指針==5',
     effects: [{ type: 'score', value: 37 }],
     limit: 1,
     card_cost: 105,
@@ -2939,7 +2939,7 @@ export const data = [
     type: 'active',
     plan: 'anomaly',
     cost: { type: 'hp', value: 0 },
-    condition: '指針==4',
+    condition: '指針==5',
     effects: [{ type: 'score', value: 47 }],
     limit: 1,
     card_cost: 141,
@@ -3022,7 +3022,7 @@ export const data = [
       {
         trigger: 'change_guideline',
         condition: '',
-        effects: [{ type: 'score', value: 2 }],
+        effects: [{ type: 'add_score', value: 2 }],
         limit: -1,
       },
     ],
@@ -3033,7 +3033,7 @@ export const data = [
   },
   {
     id: 3013071,
-    name: '理想のテンポ',
+    name: '理想のテンポ+',
     type: 'active',
     plan: 'anomaly',
     cost: { type: 'hp', value: -5 },
@@ -3042,7 +3042,7 @@ export const data = [
       {
         trigger: 'change_guideline',
         condition: '',
-        effects: [{ type: 'score', value: 4 }],
+        effects: [{ type: 'add_score', value: 4 }],
         limit: -1,
       },
     ],
@@ -3061,7 +3061,7 @@ export const data = [
     effects: [
       { type: 'status', target: '全力値', value: 3 },
       { type: 'score', value: 9 },
-      { type: 'status', target: '指針', value: 2, delay: 1 },
+      { type: 'status', target: '指針', value: 1, delay: 1 },
     ],
     limit: 1,
     card_cost: 105,
@@ -3077,7 +3077,7 @@ export const data = [
     effects: [
       { type: 'status', target: '全力値', value: 4 },
       { type: 'score', value: 10 },
-      { type: 'status', target: '指針', value: 2, delay: 1 }, // 2段階
+      { type: 'status', target: '指針', value: 2, delay: 1 },
     ],
     limit: 1,
     card_cost: 141,
@@ -3876,7 +3876,7 @@ export const data = [
       { type: 'retain', target: '手札', value: 1 },
     ],
     limit: 1,
-    card_cost: 105,
+    card_cost: 75,
     allow_duplicate: true,
   },
   {
@@ -3892,7 +3892,7 @@ export const data = [
       { type: 'retain', target: '手札', value: 1 },
     ],
     limit: 1,
-    card_cost: 141,
+    card_cost: 102,
     allow_duplicate: true,
   },
   {
@@ -3903,11 +3903,11 @@ export const data = [
     cost: { type: 'hp', value: -2 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'genki', value: 8 },
     ],
     limit: 1,
-    card_cost: 105,
+    card_cost: 75,
     allow_duplicate: true,
   },
   {
@@ -3918,11 +3918,11 @@ export const data = [
     cost: { type: 'hp', value: -2 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'genki', value: 13 },
     ],
     limit: 1,
-    card_cost: 141,
+    card_cost: 102,
     allow_duplicate: true,
   },
   {
@@ -3934,7 +3934,7 @@ export const data = [
     condition: '',
     pre_effects: [{ type: 'レッスン開始時手札に入る', value: 0 }],
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'genki', value: 5 },
       { type: 'status', target: '全力値', value: 2 },
     ],
@@ -3951,7 +3951,7 @@ export const data = [
     condition: '',
     pre_effects: [{ type: 'レッスン開始時手札に入る', value: 0 }],
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'genki', value: 8 },
       { type: 'status', target: '全力値', value: 3 },
     ],
@@ -3967,7 +3967,7 @@ export const data = [
     cost: { type: 'hp', value: -2 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'genki', value: 5 },
       { type: 'status', target: '全力値', value: 2 },
     ],
@@ -3983,7 +3983,7 @@ export const data = [
     cost: { type: 'hp', value: -2 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 }, //2段階
+      { type: 'status', target: '指針', value: 2 },
       { type: 'genki', value: 5 },
       { type: 'status', target: '全力値', value: 3 },
     ],
@@ -5211,8 +5211,8 @@ export const data = [
     growths: [
       {
         trigger: 'change_guideline',
-        condition: '指針==4',
-        effects: [{ type: 'score', value: 20 }],
+        condition: '指針==5',
+        effects: [{ type: 'add_score', value: 20 }],
         limit: 1,
       },
     ],
@@ -5221,7 +5221,7 @@ export const data = [
       {
         type: 'score',
         value: 10,
-        options: [{ type: 'increase_by_percentage', target: 'total_mantra', value: 100 }],
+        options: [{ type: 'increase_by_percentage', target: 'totalMantra', value: 100 }],
       },
     ],
     limit: 1,
@@ -5238,8 +5238,8 @@ export const data = [
     growths: [
       {
         trigger: 'change_guideline',
-        condition: '指針==4',
-        effects: [{ type: 'score', value: 30 }],
+        condition: '指針==5',
+        effects: [{ type: 'add_score', value: 30 }],
         limit: 1,
       },
     ],
@@ -5248,7 +5248,7 @@ export const data = [
       {
         type: 'score',
         value: 10,
-        options: [{ type: 'increase_by_percentage', target: 'total_mantra', value: 150 }],
+        options: [{ type: 'increase_by_percentage', target: 'totalMantra', value: 150 }],
       },
     ],
     limit: 1,
@@ -5266,7 +5266,7 @@ export const data = [
       {
         trigger: 'change_guideline',
         condition: '',
-        effects: [{ type: 'score', value: 15 }],
+        effects: [{ type: 'add_score', value: 15 }],
         limit: 4,
       },
     ],
@@ -5289,7 +5289,7 @@ export const data = [
       {
         trigger: 'change_guideline',
         condition: '',
-        effects: [{ type: 'score', value: 20 }],
+        effects: [{ type: 'add_score', value: 20 }],
         limit: 4,
       },
     ],
@@ -5309,7 +5309,7 @@ export const data = [
     cost: { type: 'hp', value: -8 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 3 }, //２段階目
+      { type: 'status', target: '指針', value: 4 },
       { type: 'score', value: 7 },
       { type: 'status', target: '全力値', value: 3 },
       { type: 'status', target: '消費体力減少', value: 2 },
@@ -5326,7 +5326,7 @@ export const data = [
     cost: { type: 'hp', value: -8 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 3 }, //２段階目
+      { type: 'status', target: '指針', value: 4 },
       { type: 'score', value: 16 },
       { type: 'status', target: '全力値', value: 4 },
       { type: 'status', target: '消費体力減少', value: 4 },
@@ -5344,8 +5344,8 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '全力値', value: 3 },
-      { type: 'status', target: '指針', value: 2, delay: 1 },
-      { type: 'score', value: 20, condition: '指針==4', times: 2 },
+      { type: 'status', target: '指針', value: 1, delay: 1 },
+      { type: 'score', value: 20, condition: '指針==5', times: 2 },
     ],
     limit: 1,
     card_cost: 150,
@@ -5360,8 +5360,8 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: '全力値', value: 4 },
-      { type: 'status', target: '指針', value: 2, delay: 1 }, // 2段階
-      { type: 'score', value: 25, condition: '指針==4', times: 2 },
+      { type: 'status', target: '指針', value: 2, delay: 1 },
+      { type: 'score', value: 25, condition: '指針==5', times: 2 },
     ],
     limit: 1,
     card_cost: 150,
@@ -5377,7 +5377,7 @@ export const data = [
     effects: [
       { type: 'status', target: '指針', value: 3 },
       { type: 'score', value: 14, times: 2 },
-      { type: 'status', target: '指針', value: 2, delay: 1 },
+      { type: 'status', target: '指針', value: 1, delay: 1 },
     ],
     limit: 1,
     card_cost: 150,
@@ -5391,9 +5391,9 @@ export const data = [
     cost: { type: 'hp', value: -10 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 3 }, // 二段階
+      { type: 'status', target: '指針', value: 4 },
       { type: 'score', value: 19, times: 2 },
-      { type: 'status', target: '指針', value: 2, delay: 1 }, // 二段階
+      { type: 'status', target: '指針', value: 2, delay: 1 },
     ],
     limit: 1,
     card_cost: 204,
@@ -5411,8 +5411,7 @@ export const data = [
       {
         type: 'status',
         target: '次に使用したスキルカードの消費体力を0にする',
-        value: 1,
-        options: [{ type: 'status_option', target: 'limit', value: 2 }],
+        value: 2,
       },
       { type: 'status', target: 'スキルカード使用数追加', value: 1 },
       { type: 'draw', value: 3 },
@@ -5433,8 +5432,7 @@ export const data = [
       {
         type: 'status',
         target: '次に使用したスキルカードの消費体力を0にする',
-        value: 1,
-        options: [{ type: 'status_option', target: 'limit', value: 2 }],
+        value: 2,
       },
       { type: 'status', target: 'スキルカード使用数追加', value: 2 },
       { type: 'draw', value: 3 },
@@ -5944,7 +5942,7 @@ export const data = [
     condition: '',
     effects: [
       { type: 'status', target: 'スキルカード使用数追加', value: 1 },
-      { type: 'reinforcement', target: 'パラメータ上昇回数増加', value: 1 },
+      { type: 'reinforcement', target: '手札のパラメータ上昇回数増加', value: 1 },
     ],
     limit: 1,
     card_cost: 150,
@@ -5959,7 +5957,7 @@ export const data = [
     condition: '',
     effects: [
       { type: 'genki', value: 4 },
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'status', target: 'スキルカード使用数追加', value: 1 },
       { type: 'reinforcement', target: '手札のパラメータ上昇回数増加', value: 1 },
     ],
@@ -6378,6 +6376,36 @@ export const data = [
     allow_duplicate: false,
   },
   {
+    id: 4203040,
+    name: 'メリクリで～す♪',
+    type: 'mental',
+    plan: 'logic',
+    cost: { type: 'hp', value: -2 },
+    condition: '',
+    effects: [
+      { type: 'status', target: '好印象', value: 3 },
+      { type: 'status', target: 'メンタルスキルカード使用時やる気+1', value: 1 },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
+    id: 4203041,
+    name: 'メリクリで～す♪+',
+    type: 'mental',
+    plan: 'logic',
+    cost: { type: 'hp', value: -2 },
+    condition: '',
+    effects: [
+      { type: 'status', target: '好印象', value: 5 },
+      { type: 'status', target: 'メンタルスキルカード使用時やる気+1', value: 1 },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
     id: 4204010,
     name: '盛装の華形',
     type: 'active',
@@ -6531,6 +6559,52 @@ export const data = [
         type: 'score',
         value: 0,
         options: [{ type: 'increase_by_percentage', target: '好調', value: 300 }],
+      },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
+    id: 4205030,
+    name: '愛をこめて',
+    type: 'active',
+    plan: 'logic',
+    cost: { type: 'hp', value: -6 },
+    condition: '',
+    effects: [
+      {
+        type: 'genki',
+        value: 4,
+        options: [{ type: 'increase_by_factor-1', target: 'やる気', value: 1.8 }],
+      },
+      {
+        type: 'score',
+        value: 0,
+        options: [{ type: 'increase_by_percentage', target: 'やる気', value: 300 }],
+      },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
+    id: 4205031,
+    name: '愛をこめて+',
+    type: 'active',
+    plan: 'logic',
+    cost: { type: 'hp', value: -6 },
+    condition: '',
+    effects: [
+      {
+        type: 'genki',
+        value: 6,
+        options: [{ type: 'increase_by_factor-1', target: 'やる気', value: 2 }],
+      },
+      {
+        type: 'score',
+        value: 0,
+        options: [{ type: 'increase_by_percentage', target: 'やる気', value: 400 }],
       },
     ],
     limit: 1,
@@ -6729,6 +6803,36 @@ export const data = [
     effects: [
       { type: 'status', target: 'やる気', value: 8 },
       { type: 'status', target: 'やる気', value: 5, condition: 'やる気>=3' },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
+    id: 4207030,
+    name: '踏切の先に+',
+    type: 'active',
+    plan: 'anomaly',
+    cost: { type: 'hp', value: -3 },
+    condition: '指針==5',
+    effects: [
+      { type: 'score', value: 16, times: 3 },
+      { type: 'status', target: '指針', value: 2, delay: 1 },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
+    id: 4207031,
+    name: '踏切の先に+',
+    type: 'active',
+    plan: 'anomaly',
+    cost: { type: 'hp', value: -3 },
+    condition: '指針==5',
+    effects: [
+      { type: 'score', value: 16, times: 3 },
+      { type: 'status', target: '指針', value: 2, delay: 1 },
     ],
     limit: 1,
     card_cost: 0,
@@ -7041,6 +7145,36 @@ export const data = [
     allow_duplicate: false,
   },
   {
+    id: 4210020,
+    name: 'おすそわけですっ！',
+    type: 'mental',
+    plan: 'sense',
+    cost: { type: 'hp', value: -7 },
+    condition: '',
+    effects: [
+      { type: 'status', target: '集中', value: 1 },
+      { type: 'status', target: '以降、ターン開始時、好調2ターン', value: 1 },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
+    id: 4210021,
+    name: 'おすそわけですっ！+',
+    type: 'mental',
+    plan: 'sense',
+    cost: { type: 'hp', value: -6 },
+    condition: '',
+    effects: [
+      { type: 'status', target: '集中', value: 3 },
+      { type: 'status', target: '以降、ターン開始時、好調2ターン', value: 1 },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
     id: 4211010,
     name: '一番高い星',
     type: 'active',
@@ -7050,10 +7184,10 @@ export const data = [
     growths: [
       {
         trigger: 'after_play_card',
-        condition: 'card_contains_effect==指針:3',
+        condition: 'card_contains_effect==指針:3|card_contains_effect==指針:4',
         effects: [
-          { type: 'score', value: 10 },
-          { type: 'cost', value: 1 },
+          { type: 'add_score', value: 10 },
+          { type: 'reduce_cost', value: 1 },
         ],
         limit: 2,
       },
@@ -7076,10 +7210,10 @@ export const data = [
     growths: [
       {
         trigger: 'after_play_card',
-        condition: 'card_contains_effect==指針:3',
+        condition: 'card_contains_effect==指針:3|card_contains_effect==指針:4',
         effects: [
-          { type: 'score', value: 15 },
-          { type: 'cost', value: 1 },
+          { type: 'add_score', value: 15 },
+          { type: 'reduce_cost', value: 1 },
         ],
         limit: 2,
       },
@@ -7633,7 +7767,7 @@ export const data = [
     cost: { type: 'hp', value: -5 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 },
+      { type: 'status', target: '指針', value: 1 },
       { type: 'status', target: '全力値', value: 3 },
       { type: 'upgrade', value: 0, delay: 1 },
     ],
@@ -7649,9 +7783,39 @@ export const data = [
     cost: { type: 'hp', value: -5 },
     condition: '',
     effects: [
-      { type: 'status', target: '指針', value: 2 }, // 2段階目
+      { type: 'status', target: '指針', value: 2 },
       { type: 'status', target: '全力値', value: 4 },
       { type: 'upgrade', value: 0, delay: 1 },
+    ],
+    limit: 1,
+    card_cost: 126,
+    allow_duplicate: false,
+  },
+  {
+    id: 4300180,
+    name: '光の夜',
+    type: 'mental',
+    plan: 'sense',
+    cost: { type: 'hp', value: 0 },
+    condition: '',
+    effects: [
+      { type: 'status', target: '絶好調', value: 2 },
+      { type: 'heal', value: 2 },
+    ],
+    limit: 1,
+    card_cost: 96,
+    allow_duplicate: false,
+  },
+  {
+    id: 4300181,
+    name: '光の夜+',
+    type: 'mental',
+    plan: 'sense',
+    cost: { type: 'hp', value: 0 },
+    condition: '',
+    effects: [
+      { type: 'status', target: '絶好調', value: 3 },
+      { type: 'heal', value: 4 },
     ],
     limit: 1,
     card_cost: 126,

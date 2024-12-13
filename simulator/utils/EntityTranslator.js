@@ -28,11 +28,12 @@ export default class EntityTranslator {
     anomaly: 'アノマリー',
   };
   static guidelineTranslation = {
-    0: '無',
-    1: '無',
-    2: '温存',
-    3: '強気',
-    4: '全力',
+    0: '無し',
+    1: '温存:段階1',
+    2: '温存:段階2',
+    3: '強気:段階1',
+    4: '強気:段階2',
+    5: '全力',
   };
   static effectTypeTranslation = {
     score: 'スコア',
@@ -49,11 +50,19 @@ export default class EntityTranslator {
     generate: '生成',
     extra_turn: '追加ターン',
     cost: 'コスト',
+    retain: '保留',
+    reinforcement: 'カード強化',
   };
 
   static translateEffectType(type, target) {
     if (type == 'status') {
       return target;
+    }
+    if (type == 'reinforcement') {
+      return `カード強化:${target}`;
+    }
+    if (type == 'retain') {
+      return `${target}のカードを保留`;
     }
     return this.effectTypeTranslation[type];
   }
@@ -65,6 +74,7 @@ export default class EntityTranslator {
     cardPlayCount: 'カード使用数',
     currentTurnCardPlayCount: 'このターンのカード使用数',
     consumedHp: '消費した体力',
+    totalMantra: '累計全力値',
   };
 
   static translateTargetName(target) {
@@ -76,8 +86,18 @@ export default class EntityTranslator {
     }
     const trigger = this.translateTrigger(growth.trigger);
     const condition = this.translateCondition(growth.condition);
-    const effects = growth.effects?.map((effect) => this.translateEffect(effect)) ?? '';
-    return `成長：${trigger}、${condition}なら、${effects.join('、')}`;
+    const effects = growth.effects?.map((effect) => this.translateGrowthEffect(effect)) ?? '';
+    return `成長：${trigger}、${condition}${condition ? 'なら、' : ''}${effects.join('、')}`;
+  }
+  static growthEffectTypeTranslation = {
+    add_score: 'スコア上昇量',
+    reduce_cost: 'コスト減少',
+    add_score_times: 'スコア発動回数',
+  };
+  static translateGrowthEffect(growthEffect) {
+    return `${this.growthEffectTypeTranslation[growthEffect.type]}${
+      growthEffect.value < 0 ? growthEffect.value : '+' + growthEffect.value
+    }`;
   }
   static translatePreEffect(preEffect) {
     if (!preEffect) {
@@ -136,6 +156,8 @@ export default class EntityTranslator {
         return 'カード使用後';
       case 'consume_hp':
         return '体力減少時';
+      case 'change_guideline':
+        return '指針変更時';
       default:
         if (~trigger.indexOf('increased_status')) {
           return trigger.replace('increased_status:', '') + '増加後';
@@ -209,6 +231,9 @@ export default class EntityTranslator {
     if (key == 'remain_turn') {
       return `残り${value}ターン`;
     }
+    if (key == 'total_mantra') {
+      return `累計全力値が${value}`;
+    }
     if (key == '指針') {
       return `指針:${this.guidelineTranslation[value]}`;
     }
@@ -259,6 +284,11 @@ export default class EntityTranslator {
     const effectType = this.translateEffectType(type, target);
     const valueText = this.translateEffectValue(value, options);
     const timesValue = times ? `（${times}回）` : '';
+    if (type == 'status' && target == '指針') {
+      return `${conditionText}${conditionText ? 'の場合、' : ''}${delayText}指針[${
+        this.guidelineTranslation[value]
+      }]に変更`;
+    }
     if (options) {
       options.forEach(({ type, target, value }) => {
         if (type == 'increase_by_factor') {

@@ -77,17 +77,25 @@ class ConditionItem {
       case 'turn_multiple_of':
         return player.turnManager.currentTurn % Number(value) == 0 ? value : -1;
       case 'card_id':
-        return player.lastPlayCard?.id;
+        return player.lastPlayCardIndex >= 0
+          ? player.deck.cards[player.lastPlayCardIndex].id
+          : null;
       case 'card_type':
-        return player.lastPlayCard?.type;
+        return player.lastPlayCardIndex >= 0
+          ? player.deck.cards[player.lastPlayCardIndex].type
+          : null;
       case 'card_contains_effect':
         const [type, target] = value.split(':');
-        return player.lastPlayCard?.effects.some((effect) => {
-          return (
-            (effect.target == type || effect.type == type) &&
-            (!target || player.status.getValue(type) == Number(target))
-          );
-        })
+        return (
+          player.lastPlayCardIndex >= 0
+            ? player.deck.cards[player.lastPlayCardIndex].effects.some((effect) => {
+                return (
+                  (effect.target == type || effect.type == type) &&
+                  (!target || player.status.getValue(type) == Number(target))
+                );
+              })
+            : null
+        )
           ? value
           : -1;
       case 'card_play_count_multiple_of':
@@ -96,6 +104,8 @@ class ConditionItem {
         return player.currentTurnCardPlayCount % Number(value) == 0 ? value : -1;
       case 'remain_turn':
         return player.turnManager.remainTurn;
+      case 'total_mantra':
+        return player.totalMantra;
       default:
         return player.status.getValue(key);
     }

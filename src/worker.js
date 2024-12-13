@@ -12,6 +12,7 @@ self.onmessage = function (e) {
   const start_time = performance.now();
 
   for (let i = 0; i < runs; i++) {
+    data.seed += 1;
     const result = run(data, false);
     scoreList.push(result.finalScore);
     if (!minLog || minLog.finalScore > result.finalScore) {
@@ -25,7 +26,7 @@ self.onmessage = function (e) {
     }
     const rap_time = performance.now();
     // console.log(`rap_time > ${rap_time - start_time}`);
-    if (rap_time - start_time > 20000) {
+    if (rap_time - start_time > 30000) {
       console.log(`forced quit > ${rap_time - start_time}`);
       rndLog = result;
       break;

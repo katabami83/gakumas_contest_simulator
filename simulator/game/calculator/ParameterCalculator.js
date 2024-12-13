@@ -1,4 +1,5 @@
 export default class ParameterCalculator {
+  static version = '1.0';
   static adjustParameter(parameter) {
     if (parameter <= 300) {
       return parameter * 5 + 1;
@@ -9,18 +10,17 @@ export default class ParameterCalculator {
     if (parameter <= 900) {
       return parameter * 3 + 900;
     }
-    if (parameter <= 1200) {
+    if (parameter <= 1200 || this.version == 'b') {
       return parameter * 2 + 1800;
     }
     return parameter * 1 + 3000;
   }
 
   static getScoreBonus(status, criterion, penalty, supportBonus) {
+    const statusCoef = this.version == 'b' ? 1.1 : 1;
     return Math.ceil(
       Math.floor(
-        Math.ceil(status * criterion * (1 - penalty) + 100) *
-          (1 + supportBonus) *
-          10
+        Math.ceil(status * statusCoef * criterion * (1 - penalty) + 100) * (1 + supportBonus) * 10
       ) / 10
     );
   }
@@ -30,19 +30,16 @@ export default class ParameterCalculator {
       .map((value, index) => {
         const threshold = (80 * criteria[index]) / 9;
         if (value <= threshold) {
-          return (
-            Math.floor((0.25 - (value / threshold) * 0.15) * 10000) / 10000
-          );
+          return Math.floor((0.25 - (value / threshold) * 0.15) * 10000) / 10000;
         }
         return 0;
       })
       .reduce((total, current) => total + current, 0);
   }
 
-  static get(parameter, criteria, supportBonus) {
-    const adjustedParameter = parameter.map((value) =>
-      ParameterCalculator.adjustParameter(value)
-    );
+  static get(parameter, criteria, supportBonus, version = 'a') {
+    this.version = version;
+    const adjustedParameter = parameter.map((value) => ParameterCalculator.adjustParameter(value));
     const scoreVonus = adjustedParameter.map((value, index) =>
       ParameterCalculator.getScoreBonus(
         value,

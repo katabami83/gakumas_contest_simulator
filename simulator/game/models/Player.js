@@ -24,11 +24,12 @@ export default class Player extends Clone {
    * @param {Object} data.stageData - stageに関するデータ
    * @param {Array} data.cardIds - カードIDリスト
    * @param {Array} data.pItemIds - PアイテムIDリスト
+   * @param {Number} data.seed - シード値
    */
-  constructor({ playerData, stageData, cardIds, pItemIds }) {
+  constructor({ playerData, stageData, cardIds, pItemIds, seed }) {
     super(['parameter', 'log']);
     /** 乱数器 @type {RandomGenerator} */
-    this.random = new RandomGenerator(Date.now());
+    this.random = new RandomGenerator(seed ?? 0);
     /** パラメータ @type {Parameter} */
     this.parameter = new Parameter(playerData.vocal, playerData.dance, playerData.visual);
     /** デッキ @type {Deck} */
@@ -61,10 +62,14 @@ export default class Player extends Clone {
     this.remainExtraAction = 0;
     /** 消費したHP @type {Number} */
     this.consumedHp = 0;
+    /** 累計全力値 @type {Number} */
+    this.totalMantra = 0;
+    /** カード効果でHPを消費するか @type {Boolean} */
+    this.isConsumeHpByCard = false;
     /** 効果2回発動 @type {Number} */
     this.dualCast = 0;
-    /** 最後に使用したカード @type {Card|null} */
-    this.lastPlayCard = null;
+    /** 最後に使用したカードインデックス @type {Number} */
+    this.lastPlayCardIndex = -1;
     /** フェーズ @type {Number} */
     this.phase = 0;
     /** ログ @type {PlayerLog} */
@@ -109,6 +114,13 @@ export default class Player extends Clone {
     );
     if (isDraw) {
       this.drawCards(3);
+    }
+    // 指針
+    if (this.status.getValue('全力値') >= 10) {
+      if (this.status.getValue('指針固定') == 0) {
+        this.status.reduce('全力値', 10);
+      }
+      this.applyEffect(new Effect({ type: 'status', target: '指針', value: 5 }), 'status');
     }
     this.triggerEvent('start_turn');
     this.triggerEvent('start_turn_interval');
@@ -263,11 +275,18 @@ export default class Player extends Clone {
   playCard(selectedHandIndex) {
     const card = this.deck.getHandCard(selectedHandIndex);
     this.log.add('use', 'card', card.name);
-    this.lastPlayCard = card;
+    this.lastPlayCardIndex = this.deck.handCardIndexes[selectedHandIndex];
     this.cardPlayCount += 1;
     this.currentTurnCardPlayCount += 1;
     // コスト消費
+    if (this.status.getValue('次に使用したスキルカードの消費体力を0にする') > 0) {
+      this.status.reduce('次に使用したスキルカードの消費体力を0にする', 1);
+      this.isConsumeHpByCard = true;
+    }
     this.applyEffect(card.cost, 'card');
+    if (this.status.getValue('指針') == 4) {
+      this.applyEffect(new Effect({ type: 'fixed_direct_hp', value: -1 }), 'status');
+    }
     // カード効果条件判定
     const availableEffects = this.getAvailableEffects(card.effects);
     // カード使用する時効果
@@ -283,6 +302,7 @@ export default class Player extends Clone {
       availableEffects.forEach((effect) => this.applyEffect(effect, 'card'));
       this.log.add('end');
     }
+    this.isConsumeHpByCard = false;
     // カード使用後の効果
     this.triggerEvent('after_play_card');
     this.log.add('end');
@@ -312,6 +332,39 @@ export default class Player extends Clone {
     }
   }
 
+  selectRetainCards(candidates, value) {
+    const getScoreByCardIndex = (cardIndex) => {
+      const card = this.deck.cards[cardIndex];
+      let score = 0;
+      for (let i = 0; i < card.effects.length; i++) {
+        if (card.effects[i].type == 'score') {
+          score += card.effects[i].value * card.effects[i].times;
+        }
+      }
+      return score;
+    };
+    const compareFn = (a, b) => {
+      const scoreA = getScoreByCardIndex(a);
+      const scoreB = getScoreByCardIndex(b);
+      if (scoreA < scoreB) {
+        return 1;
+      } else if (scoreB > scoreA) {
+        return -1;
+      }
+      return 0;
+    };
+
+    const sortedCardIndexes = candidates.toSorted(compareFn);
+    const result = [];
+    for (let i = 0; i < value; i++) {
+      if (sortedCardIndexes.length - i < 1) {
+        break;
+      }
+      result.push(sortedCardIndexes[i]);
+    }
+    return result;
+  }
+
   /**
    * EffectをPlayerに適用する
    * @param {Effect} effect
@@ -327,7 +380,7 @@ export default class Player extends Clone {
       return;
     }
 
-    const value = EffectCalculator.calcValue(effect, this);
+    let value = EffectCalculator.calcValue(effect, this);
     const isTriggerEvent = sourceType == 'card';
 
     // console.log(`applyEffect: ${type}, ${target}, ${value}`);
@@ -360,6 +413,9 @@ export default class Player extends Clone {
       return;
     }
     if (type == 'hp' || type == 'direct_hp' || type == 'fixed_direct_hp') {
+      if (sourceType == 'card' && this.isConsumeHpByCard) {
+        value = 0;
+      }
       const hp = this.hp;
       const genki = this.genki;
       if (type == 'direct_hp' || type == 'fixed_direct_hp') {
@@ -433,6 +489,46 @@ export default class Player extends Clone {
       }
       return;
     }
+    if (type == 'retain') {
+      let candidateIndexes = [];
+      switch (target) {
+        case '自身':
+          candidateIndexes = [this.lastPlayCardIndex];
+          break;
+        case '手札':
+          candidateIndexes = [].concat(this.deck.handCardIndexes);
+          break;
+        case '山札捨札':
+          candidateIndexes = [].concat(this.deck.drawPileIndexes, this.deck.discardPileIndexes);
+          break;
+        default:
+          const index = this.deck.searchIndexByName(target);
+          if (index > -1) {
+            candidateIndexes = [index];
+          }
+      }
+      const retainIndexes = this.selectRetainCards(candidateIndexes, value);
+      this.deck.retainCards(retainIndexes);
+      this.log.add(
+        'effect',
+        null,
+        `${retainIndexes.map((index) => this.deck.cards[index].name).join(', ')}を保留に移動`
+      );
+      return;
+    }
+    if (type == 'move') {
+      return;
+    }
+    if (type == 'reinforcement') {
+      if (target == '手札のパラメータ上昇回数増加') {
+        this.deck.reinforceCards('handCard', 'add_score_times', value);
+        this.log.add('effect', null, `手札のカードを強化`);
+      } else if (target == 'すべてのパラメータ値増加') {
+        this.deck.reinforceCards('all', 'add_score', value);
+        this.log.add('effect', null, `全てのカードを強化`);
+      }
+      return;
+    }
     if (type == 'extra_turn') {
       const extraTurn = this.turnManager.extraTurn;
       this.turnManager.addExtraTurn(value);
@@ -451,25 +547,72 @@ export default class Player extends Clone {
           const _value = this.status.getValue('低下状態無効');
           this.log.add('effect', null, `低下状態無効：${_value + 1}→${_value}(-1)`);
         } else {
-          /* 暫定 */
+          if (target == '全力値') {
+            this.totalMantra += value;
+          }
           if (target == '指針') {
             const guideline = this.status.getValue(target);
-            const guidelineTexts = ['無し', '無し', '温存', '強気', '全力'];
-            if (guideline != value) {
-              // this.triggerEvent(`change_guideline:${value}`);
-              if (guideline == 2 && (value == 3 || value == 4)) {
-                const zeal = this.status.getValue('熱意');
-                this.status.add('熱意', 5);
-                this.log.add('effect', null, `熱意：${zeal}→${zeal + 5}(5)`);
+            const guidelineTexts = [
+              '無し',
+              '温存:段階1',
+              '温存:段階2',
+              '強気:段階1',
+              '強気:段階2',
+              '全力',
+            ];
+            if (this.status.getValue('指針固定') > 0) {
+              this.log.add('effect', null, `指針：${guidelineTexts[guideline]}(指針固定)`);
+            } else if (
+              ((value == 1 || value == 2) && guideline == 2) ||
+              ((value == 3 || value == 4) && guideline == 4) ||
+              guideline == 5
+            ) {
+              this.log.add('effect', null, `指針：${guidelineTexts[guideline]}(変化なし)`);
+            } else {
+              if (value == 3 || value == 4 || value == 5) {
+                if (guideline == 1) {
+                  this.applyEffect(
+                    new Effect({ type: 'status', target: 'スキルカード使用数追加', value: 1 }),
+                    'status'
+                  );
+                  this.applyEffect(
+                    new Effect({ type: 'status', target: '熱意', value: 5 }),
+                    'status'
+                  );
+                } else if (guideline == 2) {
+                  this.applyEffect(
+                    new Effect({ type: 'status', target: 'スキルカード使用数追加', value: 1 }),
+                    'status'
+                  );
+                  this.applyEffect(new Effect({ type: 'genki', value: 5 }), 'status');
+                  this.applyEffect(
+                    new Effect({ type: 'status', target: '熱意', value: 8 }),
+                    'status'
+                  );
+                }
               }
-              this.status.add('指針', value);
+              let setValue = value;
+              if (guideline == 1 && value == 1) {
+                setValue = 2;
+              }
+              if (guideline == 3 && value == 3) {
+                setValue = 4;
+              }
+              this.status.add('指針', setValue);
               this.log.add(
                 'effect',
                 null,
-                `指針：${guidelineTexts[guideline]}→${guidelineTexts[value]}`
+                `指針：${guidelineTexts[guideline]}→${guidelineTexts[setValue]}`
               );
-            } else {
-              this.log.add('effect', null, `指針：${guidelineTexts[guideline]}(変化なし)`);
+              if (setValue == 5) {
+                this.applyEffect(
+                  new Effect({ type: 'status', target: 'スキルカード使用数追加', value: 1 }),
+                  'status'
+                );
+                this.deck.handCardIndexes.push(...this.deck.retainIndexes);
+                this.deck.retainIndexes = [];
+              }
+              this.triggerEvent(`change_guideline`);
             }
             return;
           }

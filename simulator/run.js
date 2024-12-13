@@ -25,6 +25,7 @@ export function run(data, isLog) {
       plan: data.plan,
       trend: data.trend,
     },
+    seed: data.seed,
   };
   const player = new Player(input);
   player.init();
@@ -59,14 +60,14 @@ export function run(data, isLog) {
 
     if (isLog) {
       console.log(actionMap);
-      // for (const action of allActions) {
-      //   console.log(
-      //     action.actions
-      //       .map(([cardIndex]) => player.deck.cards[cardIndex]?.name ?? '休憩')
-      //       .join(' => '),
-      //     action.score
-      //   );
-      // }
+      for (const action of allActions) {
+        console.log(
+          action.actions
+            .map(([cardIndex]) => player.deck.cards[cardIndex]?.name ?? '休憩')
+            .join(' => '),
+          action.score
+        );
+      }
     }
 
     const currentTurn = player.turnManager.currentTurn;

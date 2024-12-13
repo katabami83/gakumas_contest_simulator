@@ -43,7 +43,7 @@ const runSimulation = async () => {
 
 const simulate = async () => {
   const run_data = getData();
-  // console.log(run_data);
+  console.log(run_data);
   if (!run_data) {
     alert('アイドルを選択してください');
     return;
@@ -59,7 +59,7 @@ async function runWebWorker(data) {
   return new Promise((resolve) => {
     let numWorkers = 1;
     if (navigator.hardwareConcurrency) {
-      numWorkers = Math.min(navigator.hardwareConcurrency, 8);
+      numWorkers = Math.min(navigator.hardwareConcurrency, 16);
     }
     const totalRuns = 1000;
     const runsPerWorker = Math.ceil(totalRuns / numWorkers);
@@ -77,6 +77,7 @@ async function runWebWorker(data) {
       const worker = new Worker(new URL('/src/worker.js', import.meta.url), {
         type: 'module',
       });
+      data.seed += totalRuns * 2;
       worker.postMessage({ runs: runsPerWorker, data: data });
 
       worker.onmessage = (e) => {

@@ -38,6 +38,8 @@ export const criteria = ref({
   visual: 0,
 });
 
+export const paramCalcType = ref('a');
+
 function correct(input, base) {
   const number = Number(input);
   if (Number.isFinite(number)) {
@@ -73,6 +75,7 @@ watch(contestStageId, () => {
   contest.value = DataLoader.get_contest_by_id(contestId);
   contestStage.value = contest.value.stages[stageId];
   criteria.value = contest.value.criteria;
+  paramCalcType.value = contest.value.paramCalcType ?? 'a';
   contestPlan.value = contestStage.value.plan;
   contestPItemIds.value = contestStage.value.stagePItemIds;
 });
@@ -213,7 +216,7 @@ export const getData = () => {
       skillCardIds.push(1012010, 1012020, 1020010, 1020010, 1022010, 1022010, 1022020, 1022020);
       break;
     case 'anomaly':
-      skillCardIds.push(1010010, 1010010, 1013010, 1013010, 1023010, 1023010, 1013020, 1013020);
+      skillCardIds.push(1010010, 1010010, 1013020, 1013030, 1023010, 1023010, 1023020, 1023020);
       break;
   }
   const pItemIds = [];
@@ -253,6 +256,7 @@ export const getData = () => {
 
     skillCardIds: skillCardIds,
     count: 2000,
+    seed: Date.now(),
   };
 };
 
