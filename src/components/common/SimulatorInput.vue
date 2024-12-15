@@ -85,16 +85,6 @@ const copyToClipboard = () => {
       //
     });
 };
-
-// watchEffect(() => {
-//   const urlParams = new URLSearchParams(window.location.search);
-//   urlParams.set("contest_stage", `${contestId.value}:${stageId.value}`);
-//   urlParams.set("p_idol", `${pIdol.value?.id}`);
-//   urlParams.set("p_items", `${pItemIds.value.join(":")}`);
-//   urlParams.set("cards", `${cardIds.value.join(":")}`);
-//   console.log(urlParams.toString());
-//   window.history.replaceState(null, null, "?" + urlParams.toString());
-// });
 </script>
 
 <style scoped>

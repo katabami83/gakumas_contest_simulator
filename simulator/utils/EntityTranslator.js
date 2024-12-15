@@ -87,7 +87,10 @@ export default class EntityTranslator {
     const trigger = this.translateTrigger(growth.trigger);
     const condition = this.translateCondition(growth.condition);
     const effects = growth.effects?.map((effect) => this.translateGrowthEffect(effect)) ?? '';
-    return `成長：${trigger}、${condition}${condition ? 'なら、' : ''}${effects.join('、')}`;
+    const limit = growth.limit == -1 ? '' : `(${growth.limit}回)`;
+    return `成長：${trigger}、${condition}${condition ? 'なら、' : ''}${effects.join(
+      '、'
+    )}${limit}`;
   }
   static growthEffectTypeTranslation = {
     add_score: 'スコア上昇量',
@@ -283,7 +286,7 @@ export default class EntityTranslator {
     const delayText = this.translateEffectDelay(delay);
     const effectType = this.translateEffectType(type, target);
     const valueText = this.translateEffectValue(value, options);
-    const timesValue = times ? `（${times}回）` : '';
+    const timesValue = times ? `(${times}回)` : '';
     if (type == 'status' && target == '指針') {
       return `${conditionText}${conditionText ? 'の場合、' : ''}${delayText}指針[${
         this.guidelineTranslation[value]
@@ -309,6 +312,13 @@ export default class EntityTranslator {
       });
     }
     if (optionTexts['increase_by_percentage']) {
+      if (value > 0) {
+        return `${conditionText}${
+          conditionText ? 'の場合、' : ''
+        }${delayText}${effectType}${valueText}(${optionTexts['increase_by_percentage']}${
+          optionTexts['increase_by_factor']
+        }${optionTexts['increase_by_factor-1']}${timesValue})`;
+      }
       return `${conditionText}${conditionText ? 'の場合、' : ''}${delayText}${
         optionTexts['increase_by_percentage']
       }${optionTexts['increase_by_factor']}${optionTexts['increase_by_factor-1']}${timesValue}`;
