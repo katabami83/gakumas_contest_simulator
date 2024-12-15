@@ -3,6 +3,8 @@ import DataLoader from '/simulator/game/data/DataLoader.js';
 
 DataLoader.initialize();
 
+export const totalRunCount = ref(1000);
+
 export const contestList = Array.from(DataLoader.contest_map)
   .map((item) => item[1])
   .reverse();

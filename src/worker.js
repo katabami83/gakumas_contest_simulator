@@ -26,6 +26,9 @@ self.onmessage = function (e) {
     }
     const rap_time = performance.now();
     // console.log(`rap_time > ${rap_time - start_time}`);
+    self.postMessage({
+      type: 'log',
+    });
     if (rap_time - start_time > 30000) {
       console.log(`forced quit > ${rap_time - start_time}`);
       rndLog = result;

@@ -2,7 +2,12 @@
   <v-container>
     <v-row>
       <v-col cols="12" sm="6" md="5" lg="5" xl="5" xxl="5">
-        <SimulatorInput @run-simulation="runSimulation" :waitingFinishedRun="waitingFinishedRun" />
+        <SimulatorInput
+          @run-simulation="simulate"
+          :simulationLoading="simulationLoading"
+          :simulationDone="simulationDone"
+          :simulationTotal="simulationTotal"
+        />
         <div class="link-container mt-2">
           <v-btn
             target="_blank"
@@ -24,48 +29,49 @@
 import SimulatorInput from '@/components/common/SimulatorInput.vue';
 import SimulatorOutput from '@/components/common/SimulatorOutput.vue';
 import { ref } from 'vue';
-import { getData } from '@/store/store.js';
+import { getData, totalRunCount } from '@/store/store.js';
 
 const simulationResult = ref(null);
-const waitingFinishedRun = ref(false);
+const simulationLoading = ref(false);
+const simulationDone = ref(0);
+const simulationTotal = ref(1);
 
-const runSimulation = async () => {
-  if (waitingFinishedRun.value) {
+// シミュレーション開始
+const simulate = async () => {
+  if (simulationLoading.value) {
     return;
   }
-  waitingFinishedRun.value = true;
-  const result = await simulate();
-  waitingFinishedRun.value = false;
-  if (result) {
-    simulationResult.value = result;
-  }
-};
-
-const simulate = async () => {
+  simulationLoading.value = true;
+  //
   const run_data = getData();
   console.log(run_data);
   if (!run_data) {
     alert('アイドルを選択してください');
     return;
   }
-
   console.time('run');
   const result = await runWebWorker(run_data);
   console.timeEnd('run');
-  return result;
+  //
+  simulationLoading.value = false;
+  simulationDone.value = 0;
+  if (result) {
+    simulationResult.value = result;
+  }
 };
 
+//
 async function runWebWorker(data) {
   return new Promise((resolve) => {
     let numWorkers = 1;
     if (navigator.hardwareConcurrency) {
       numWorkers = Math.min(navigator.hardwareConcurrency, 16);
     }
-    const totalRuns = 1000;
-    const runsPerWorker = Math.ceil(totalRuns / numWorkers);
+    const runsPerWorker = Math.ceil(totalRunCount.value / numWorkers);
+    const totalRuns = runsPerWorker * numWorkers;
+    simulationTotal.value = totalRuns;
     const rndLogNumber = Math.floor(Math.random() * numWorkers);
 
-    // let completedRuns = 0;
     let completedWorkers = 0;
     let results = {
       scoreList: [],
@@ -81,8 +87,12 @@ async function runWebWorker(data) {
       worker.postMessage({ runs: runsPerWorker, data: data });
 
       worker.onmessage = (e) => {
-        completedWorkers;
         const result = e.data;
+
+        if (e.data.type == 'log') {
+          simulationDone.value++;
+          return;
+        }
 
         results.scoreList = results.scoreList.concat(result.scoreList);
         if (!results.minLog || results.minLog.finalScore > result.minLog.finalScore) {
