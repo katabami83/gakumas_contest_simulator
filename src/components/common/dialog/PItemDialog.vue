@@ -65,9 +65,9 @@ const select = (item) => {
 
 <style scoped>
 .v-tooltip :deep(.v-overlay__content) {
-  background-color: rgba(250, 250, 250, 0.9) !important;
-  border: solid 1px black;
-  color: black;
+  background-color: rgba(var(--v-theme-background), 0.85) !important;
+  border: solid 1px rgb(var(--v-border-color));
+  color: var(--v-theme-surface-bright);
 }
 
 .card-box {
@@ -132,5 +132,6 @@ const select = (item) => {
   width: 100%;
   height: 100%;
   pointer-events: none;
+  border-radius: 7px;
 }
 </style>

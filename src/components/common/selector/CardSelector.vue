@@ -69,9 +69,9 @@ onMounted(() => {
 
 <style scoped>
 .v-tooltip :deep(.v-overlay__content) {
-  background-color: rgba(250, 250, 250, 0.9) !important;
-  border: solid 1px black;
-  color: black;
+  background-color: rgba(var(--v-theme-bg-1), 0.85) !important;
+  border: solid 1px rgb(var(--v-theme-border-2));
+  color: rgb(var(--v-theme-text-1));
 }
 
 .card-box {
@@ -90,11 +90,8 @@ onMounted(() => {
   border: none;
 }
 
-.disable {
-  background-color: black;
-}
 .disable .v-img {
-  opacity: 0.5;
+  filter: brightness(50%);
 }
 
 .card-image {

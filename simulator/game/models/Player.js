@@ -102,8 +102,7 @@ export default class Player extends Clone {
     this.phase = 0;
     this.turnManager.startTurn();
     this.log.add(
-      'newTurn',
-      null,
+      'turnStart',
       [
         this.turnManager.currentTurn,
         this.turnManager.currentTurnType,
@@ -132,9 +131,9 @@ export default class Player extends Clone {
     this.deck.drawCards(count);
     const postHandCards = this.deck.handCardIndexes.length;
     if (preHandCards < postHandCards) {
-      this.log.add('effect', null, `カードを${postHandCards - preHandCards}枚引いた`);
+      this.log.add('content', `カードを${postHandCards - preHandCards}枚引いた`);
     } else {
-      this.log.add('effect', null, `カードを引けなかった`);
+      this.log.add('content', `カードを引けなかった`);
     }
   }
 
@@ -151,13 +150,14 @@ export default class Player extends Clone {
     this.status.decay();
     this.currentTurnCardPlayCount = 0;
     this.turnManager.endTurn();
+    this.log.add('turnEnd');
   }
 
   /**
    * 休憩行動
    */
   rest() {
-    this.log.add('use', 'rest');
+    this.log.add('box', '休憩:awesome_mug-saucer_#03af7a');
     this.applyEffect(new Effect({ type: 'heal', value: 2 }), 'rest');
     this.log.add('end');
   }
@@ -175,7 +175,7 @@ export default class Player extends Clone {
       const extraAction = this.status.getValue('スキルカード使用数追加');
       if (extraAction > 0) {
         this.status.reduce('スキルカード使用数追加', 1);
-        this.log.add('effect', null, `スキルカード使用数追加${extraAction}→${extraAction - 1}(-1)`);
+        this.log.add('content', `スキルカード使用数追加${extraAction}→${extraAction - 1}(-1)`);
         return;
       }
     }
@@ -274,7 +274,7 @@ export default class Player extends Clone {
    */
   playCard(selectedHandIndex) {
     const card = this.deck.getHandCard(selectedHandIndex);
-    this.log.add('use', 'card', card.name);
+    this.log.add('box', `スキルカード「${card.name}」:card_${card.id}`);
     this.lastPlayCardIndex = this.deck.handCardIndexes[selectedHandIndex];
     this.cardPlayCount += 1;
     this.currentTurnCardPlayCount += 1;
@@ -283,7 +283,7 @@ export default class Player extends Clone {
       this.status.reduce('次に使用したスキルカードの消費体力を0にする', 1);
       this.isConsumeHpByCard = true;
     }
-    this.applyEffect(card.cost, 'card');
+    this.applyEffect(card.cost, 'card', card.name);
     if (this.status.getValue('指針') == 4) {
       this.applyEffect(new Effect({ type: 'fixed_direct_hp', value: -1 }), 'status');
     }
@@ -294,12 +294,12 @@ export default class Player extends Clone {
     // カード使用
     this.deck.playHandCard(selectedHandIndex);
     // カードの効果
-    availableEffects.forEach((effect) => this.applyEffect(effect, 'card'));
+    availableEffects.forEach((effect) => this.applyEffect(effect, 'card', card.name));
     // ワンモア効果
     if (this.dualCast > 0) {
-      this.log.add('use', 'card', card.name);
+      this.log.add('box', `ステータス「${card.name}」:card_${card.id}`);
       this.dualCast -= 1;
-      availableEffects.forEach((effect) => this.applyEffect(effect, 'card'));
+      availableEffects.forEach((effect) => this.applyEffect(effect, 'card', card.name));
       this.log.add('end');
     }
     this.isConsumeHpByCard = false;
@@ -319,15 +319,19 @@ export default class Player extends Clone {
     // Pアイテム実行
     for (let i = 0; i < pItemEvents.length; i++) {
       const event = pItemEvents[i];
-      this.log.add('use', 'pItem', event.name);
-      event.effects.forEach((effect) => this.applyEffect(effect, 'pItem'));
+      this.log.add('box', `Pアイテム「${event.name}」:pItem_${event.id}`);
+      event.effects.forEach((effect) => this.applyEffect(effect, 'pItem', event.name));
       this.log.add('end');
     }
     // ステータス効果実行
     for (let i = 0; i < statusEvents.length; i++) {
       const event = statusEvents[i];
-      this.log.add('use', event.id == -1 ? 'delay' : 'status', event.name);
-      event.effects.forEach((effect) => this.applyEffect(effect, 'status'));
+      if (event.id == -1) {
+        this.log.add('box', `予約効果「${event.sourceName}」:awesome_link_#007bff`);
+      } else {
+        this.log.add('box', `ステータス「${event.sourceName}」:awesome_forward_#007bff`);
+      }
+      event.effects.forEach((effect) => this.applyEffect(effect, 'status', event.name));
       this.log.add('end');
     }
   }
@@ -369,14 +373,20 @@ export default class Player extends Clone {
    * EffectをPlayerに適用する
    * @param {Effect} effect
    * @param {String} sourceType
+   * @param {String} sourceName
    * @returns
    */
-  applyEffect(effect, sourceType) {
+  applyEffect(effect, sourceType, sourceName = sourceType) {
     const { type, target, options, delay, condition, times } = effect;
 
     if (delay) {
-      this.status.addDelayEffect('予約効果', this.turnManager.currentTurn + delay, effect);
-      this.log.add('effect', null, `予約効果(${delay}ターン後)`);
+      this.status.addDelayEffect(
+        '予約効果',
+        sourceName,
+        this.turnManager.currentTurn + delay,
+        effect
+      );
+      this.log.add('content', `予約効果[${sourceName}]：${delay}ターン後`);
       return;
     }
 
@@ -392,7 +402,7 @@ export default class Player extends Clone {
           value * this.parameter.getScale(this.turnManager.currentTurnType)
         );
         this.score += effectValue;
-        this.log.add('effect', null, `スコア：${score}→${this.score}(${effectValue})`);
+        this.log.add('content', `スコア：${score}→${this.score}(${effectValue})`);
         if (Number.isNaN(this.score)) {
           console.log(
             this,
@@ -409,7 +419,7 @@ export default class Player extends Clone {
     if (type == 'heal') {
       const hp = this.hp;
       this.hp = Math.min(this.hp + value, this.maxHp);
-      this.log.add('effect', null, `HP：${hp}→${this.hp}(${this.hp - hp})`);
+      this.log.add('content', `HP：${hp}→${this.hp}(${this.hp - hp})`);
       return;
     }
     if (type == 'hp' || type == 'direct_hp' || type == 'fixed_direct_hp') {
@@ -429,11 +439,11 @@ export default class Player extends Clone {
       this.hp = Math.max(this.hp, 0);
 
       if (this.genki < genki) {
-        this.log.add('effect', null, `元気：${genki}→${this.genki}(${this.genki - genki})`);
+        this.log.add('content', `元気：${genki}→${this.genki}(${this.genki - genki})`);
       }
       if (this.hp < hp) {
         this.consumedHp += hp - this.hp;
-        this.log.add('effect', null, `HP：${hp}→${this.hp}(${this.hp - hp})`);
+        this.log.add('content', `HP：${hp}→${this.hp}(${this.hp - hp})`);
       }
       if (isTriggerEvent && this.hp < hp) {
         // hp減少時
@@ -444,7 +454,7 @@ export default class Player extends Clone {
     if (type == 'genki' || type == 'fixed_genki') {
       const genki = this.genki;
       this.genki += value;
-      this.log.add('effect', null, `元気：${genki}→${this.genki}(${this.genki - genki})`);
+      this.log.add('content', `元気：${genki}→${this.genki}(${this.genki - genki})`);
       return;
     }
     if (type == 'draw') {
@@ -452,23 +462,23 @@ export default class Player extends Clone {
       return;
     }
     if (type == 'discard') {
-      this.log.add('effect', null, `全ての手札を捨てた`);
+      this.log.add('content', `全ての手札を捨てた`);
       this.deck.discardAllHandCards();
       return;
     }
     if (type == 'exchange') {
       const handCard = this.deck.handCardIndexes.length;
-      this.log.add('effect', null, `全ての手札を捨てた`);
+      this.log.add('content', `全ての手札を捨てた`);
       this.deck.discardAllHandCards();
       this.drawCards(handCard);
       return;
     }
     if (type == 'upgrade') {
       if (value == 0) {
-        this.log.add('effect', null, `全ての手札を強化した`);
+        this.log.add('content', `全ての手札を強化した`);
         this.deck.upgradeAllHandCards();
       } else {
-        this.log.add('effect', null, `${value}枚の手札を強化した`);
+        this.log.add('content', `${value}枚の手札を強化した`);
         this.deck.upgradeRandomHandCards(value);
       }
       return;
@@ -485,7 +495,7 @@ export default class Player extends Clone {
         );
         const targetCard = targetCardList[Math.floor(this.random.next() * targetCardList.length)];
         this.deck.addCard(targetCard.id, 'hand');
-        this.log.add('effect', null, `${targetCard.name}を手札に加えた`);
+        this.log.add('content', `${targetCard.name}を手札に加えた`);
       }
       return;
     }
@@ -510,8 +520,7 @@ export default class Player extends Clone {
       const retainIndexes = this.selectRetainCards(candidateIndexes, value);
       this.deck.retainCards(retainIndexes);
       this.log.add(
-        'effect',
-        null,
+        'content',
         `${retainIndexes.map((index) => this.deck.cards[index].name).join(', ')}を保留に移動`
       );
       return;
@@ -522,22 +531,21 @@ export default class Player extends Clone {
     if (type == 'reinforcement') {
       if (target == '手札のパラメータ上昇回数増加') {
         this.deck.reinforceCards('handCard', 'add_score_times', value);
-        this.log.add('effect', null, `手札のカードを強化`);
+        this.log.add('content', `手札のカードを強化`);
       } else if (target == 'すべてのパラメータ値増加') {
         this.deck.reinforceCards('all', 'add_score', value);
-        this.log.add('effect', null, `全てのカードを強化`);
+        this.log.add('content', `全てのカードを強化`);
       }
       return;
     }
     if (type == 'extra_turn') {
       const extraTurn = this.turnManager.extraTurn;
       this.turnManager.addExtraTurn(value);
-      this.log.add('effect', null, `追加ターン：${extraTurn}→${extraTurn + value}(${value})`);
+      this.log.add('content', `追加ターン：${extraTurn}→${extraTurn + value}(${value})`);
       return;
     }
     if (type == 'dual_cast') {
       this.dualCast += 1;
-      this.log.add('effect', null, `次の効果をもう一回効果を発動`);
       return;
     }
     if (type == 'status') {
@@ -545,7 +553,7 @@ export default class Player extends Clone {
         if (this.status.has('低下状態無効') && this.status.getType(target) == 'debuff') {
           this.status.reduce('低下状態無効', 1);
           const _value = this.status.getValue('低下状態無効');
-          this.log.add('effect', null, `低下状態無効：${_value + 1}→${_value}(-1)`);
+          this.log.add('content', `低下状態無効：${_value + 1}→${_value}(-1)`);
         } else {
           if (target == '全力値') {
             this.totalMantra += value;
@@ -561,13 +569,13 @@ export default class Player extends Clone {
               '全力',
             ];
             if (this.status.getValue('指針固定') > 0) {
-              this.log.add('effect', null, `指針：${guidelineTexts[guideline]}(指針固定)`);
+              this.log.add('content', `指針：${guidelineTexts[guideline]}(指針固定)`);
             } else if (
               ((value == 1 || value == 2) && guideline == 2) ||
               ((value == 3 || value == 4) && guideline == 4) ||
               guideline == 5
             ) {
-              this.log.add('effect', null, `指針：${guidelineTexts[guideline]}(変化なし)`);
+              this.log.add('content', `指針：${guidelineTexts[guideline]}(変化なし)`);
             } else {
               if (value == 3 || value == 4 || value == 5) {
                 if (guideline == 1) {
@@ -600,8 +608,7 @@ export default class Player extends Clone {
               }
               this.status.add('指針', setValue);
               this.log.add(
-                'effect',
-                null,
+                'content',
                 `指針：${guidelineTexts[guideline]}→${guidelineTexts[setValue]}`
               );
               if (setValue == 5) {
@@ -617,8 +624,8 @@ export default class Player extends Clone {
             return;
           }
           const _value = this.status.getValue(target);
-          this.status.add(target, value, options, this.phase);
-          this.log.add('effect', null, `${target}：${_value}→${_value + value}(${value})`);
+          this.status.add(target, value, options, this.phase, sourceName);
+          this.log.add('content', `${target}：${_value}→${_value + value}(${value})`);
           if (isTriggerEvent) {
             // ステータスアップにフック
             this.triggerEvent(`increased_status:${target}`);
@@ -627,7 +634,7 @@ export default class Player extends Clone {
       } else {
         const _value = this.status.getValue(target);
         this.status.reduce(target, -value);
-        this.log.add('effect', null, `${target}：${_value}→${_value + value}(${value})`);
+        this.log.add('content', `${target}：${_value}→${_value + value}(${value})`);
       }
       return;
     }

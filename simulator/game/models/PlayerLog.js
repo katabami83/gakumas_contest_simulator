@@ -13,8 +13,12 @@ export default class PlayerLog extends Clone {
     return result;
   }
 
-  add(type, target = '', message = '') {
+  _add(type, target = '', message = '') {
     this.result.push({ type, target, message });
+  }
+
+  add(type, text) {
+    this.result.push({ type, text });
   }
 
   nextTurn({ score, hp, genki, turnType }) {}

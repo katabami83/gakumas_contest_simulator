@@ -67,7 +67,7 @@ export default class Deck extends Clone {
       const target = targets[i];
       if (!target.condition || target.condition.check(player)) {
         const targetCard = this.cards[target.cardIndex];
-        log.add('use', 'grow', targetCard.name);
+        log.add('box', `成長「${targetCard.name}」:card_${targetCard.id}`);
         target.effects.forEach((effect) => {
           this.reinforceCard(target.cardIndex, effect.type, effect.value, log);
         });
@@ -103,8 +103,7 @@ export default class Deck extends Clone {
       targetCard.effects.forEach((cardEffect, index) => {
         if (cardEffect.type == 'score') {
           log?.add(
-            'effect',
-            null,
+            'content',
             `スコア上昇量：${targetCard.effects[index].value}→${
               targetCard.effects[index].value + value
             }(${value})`
@@ -114,8 +113,7 @@ export default class Deck extends Clone {
       });
     } else if (type == 'reduce_cost') {
       log?.add(
-        'effect',
-        null,
+        'content',
         `コスト：${targetCard.cost.value}→${targetCard.cost.value + value}(${value})`
       );
       targetCard.cost.value += value;
@@ -123,8 +121,7 @@ export default class Deck extends Clone {
       targetCard.effects.forEach((cardEffect, index) => {
         if (cardEffect.type == 'score') {
           log?.add(
-            'effect',
-            null,
+            'content',
             `スコア発動回数：${targetCard.effects[index].times}→${
               targetCard.effects[index].times + value
             }(${value})`

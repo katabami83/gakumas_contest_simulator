@@ -131,3 +131,13 @@ async function runWebWorker(data) {
   margin-left: 5px;
 }
 </style>
+
+<style>
+.v-container {
+  color: rgb(var(--v-theme-text-1));
+  background-color: rgb(var(--v-theme-bg-1));
+}
+.v-theme--dark img {
+  filter: saturate(85%) brightness(70%) contrast(130%);
+}
+</style>

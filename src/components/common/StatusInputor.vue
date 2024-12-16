@@ -2,9 +2,9 @@
   <v-row class="pa-0">
     <v-col cols="3" class="pa-0">
       <div class="status-block">
-        <p class="status-title red">ボーカル</p>
+        <p class="status-title text-vocal-text-1">ボーカル</p>
         <input type="number" v-model.number="inputStatus.vocal" class="status-input" />
-        <div class="adjusted-value-box red">
+        <div class="adjusted-value-box bg-vocal-bg-3 text-vocal-text-1">
           <p>{{ status.vocal }}%</p>
         </div>
       </div>
@@ -12,9 +12,9 @@
 
     <v-col cols="3" class="pa-0">
       <div class="status-block">
-        <p class="status-title blue">ダンス</p>
+        <p class="status-title text-dance-text-1">ダンス</p>
         <input type="number" v-model.number="inputStatus.dance" class="status-input" />
-        <div class="adjusted-value-box blue">
+        <div class="adjusted-value-box bg-dance-bg-3 text-dance-text-1">
           <p>{{ status.dance }}%</p>
         </div>
       </div>
@@ -22,9 +22,9 @@
 
     <v-col cols="3" class="pa-0">
       <div class="status-block">
-        <p class="status-title yellow">ビジュアル</p>
+        <p class="status-title text-visual-text-1">ビジュアル</p>
         <input type="number" v-model.number="inputStatus.visual" class="status-input" />
-        <div class="adjusted-value-box yellow">
+        <div class="adjusted-value-box bg-visual-bg-3 text-visual-text-1">
           <p>{{ status.visual }}%</p>
         </div>
       </div>
@@ -42,9 +42,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watchEffect, computed, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { inputStatus, status, criteria, paramCalcType } from '@/store/store.js';
-import ParameterCalculator from '/simulator/game/calculator/ParameterCalculator.js';
+import ParameterCalculator from '#/game/calculator/ParameterCalculator.js';
 
 onMounted(() => {
   const calc = () => {
@@ -99,7 +99,7 @@ onMounted(() => {
   width: 80%;
   padding: 4px;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(var(--v-theme-border-1));
   border-radius: 4px;
   margin: 4px auto;
   text-align: center;
@@ -112,29 +112,6 @@ onMounted(() => {
   text-align: center;
   margin: 0px auto;
   width: 80%;
-  color: #fff;
-}
-
-.red {
-  color: #b71c1c;
-}
-
-.red.adjusted-value-box {
-  background-color: #ffebee;
-}
-
-.blue {
-  color: #0d47a1;
-}
-.blue.adjusted-value-box {
-  background-color: #e3f2fd;
-}
-
-.yellow {
-  color: #f57f17;
-}
-.yellow.adjusted-value-box {
-  background-color: #fff8e1;
 }
 
 .green.status-title {

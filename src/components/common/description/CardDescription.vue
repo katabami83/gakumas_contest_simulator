@@ -5,7 +5,7 @@
   <div v-if="content.condition">{{ content.condition }}なら使用可能</div>
   <div>・{{ content.cost }}</div>
   <div v-for="effect in content.effects">・{{ effect }}</div>
-  <div class="sub-information-box">
+  <div class="sub-information-box text-primary">
     <div>レッスン中{{ `${card.limit < 0 ? '∞' : card.limit}` }}回</div>
     <div>重複{{ `${card.allow_duplicate ? '可能' : '不可'}` }}</div>
     <div>編成コスト：{{ card.card_cost }}</div>
@@ -49,7 +49,6 @@ const content = computed(() => {
 }
 .sub-information-box {
   margin-top: 2px;
-  color: #0d47a1;
   font-size: 0.85em;
 }
 </style>

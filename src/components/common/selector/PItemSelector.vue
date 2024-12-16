@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card
-      :class="['pItem-box', { selected: selectedPItem }]"
+      :class="['pItem-box', { selected: selectedPItem }, 'bg-background']"
       variant="text"
       @click="dialog = true"
     >
@@ -62,29 +62,24 @@ onMounted(() => {
   watch(() => props.pItemList, pItemListWatch);
   pItemListWatch();
 });
-
-const selectpItem = (pItem) => {
-  selectedPItem.value = pItem;
-  dialog.value = false;
-};
 </script>
 
 <style scoped>
 .v-tooltip :deep(.v-overlay__content) {
-  background-color: rgba(250, 250, 250, 0.9) !important;
-  border: solid 1px black;
-  color: black;
+  background-color: rgba(var(--v-theme-bg-1), 0.85) !important;
+  border: solid 1px rgb(var(--v-theme-border-2));
+  color: rgb(var(--v-theme-text-1));
 }
 
 .pItem-box {
   width: 60px;
   height: 60px;
-  border: solid 2px #999;
-  background-color: #fcfcfc;
+  border: solid 2px rgb(var(--v-theme-border-2));
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  border-radius: 7px;
 }
 
 .pItem-box.selected {
@@ -102,11 +97,6 @@ const selectpItem = (pItem) => {
 
 .placeholder-icon {
   font-size: 32px;
-}
-
-.unselected-container {
-  border: solid 2px #999;
-  border-radius: 5px;
 }
 
 .pItem-grid {

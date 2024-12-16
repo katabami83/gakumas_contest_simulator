@@ -40,7 +40,12 @@
     <v-col>
       <v-card class="custom-window">
         <v-card-item class="pa-0">
-          <v-btn-toggle v-model="selectedLog" mandatory class="w-100 custom-btn-toggle">
+          <v-btn-toggle
+            v-model="selectedLog"
+            mandatory
+            color="surface"
+            class="w-100 custom-btn-toggle"
+          >
             <v-btn value="1" class="flex-grow-1">最低値</v-btn>
             <v-btn value="2" class="flex-grow-1">ランダム</v-btn>
             <v-btn value="3" class="flex-grow-1">最大値</v-btn>
@@ -48,24 +53,15 @@
         </v-card-item>
 
         <v-card-text class="custom-content pa-1">
-          <div
-            id="contest-log-min"
-            class="contest-log"
-            v-show="selectedLog === '1'"
-            v-html="loghtmls.min"
-          ></div>
-          <div
-            id="contest-log-rnd"
-            class="contest-log"
-            v-show="selectedLog === '2'"
-            v-html="loghtmls.rnd"
-          ></div>
-          <div
-            id="contest-log-max"
-            class="contest-log"
-            v-show="selectedLog === '3'"
-            v-html="loghtmls.max"
-          ></div>
+          <div class="contest-log" v-show="selectedLog === '1'">
+            <GameLog :data="logRowData.min"></GameLog>
+          </div>
+          <div class="contest-log" v-show="selectedLog === '2'">
+            <GameLog :data="logRowData.rnd"></GameLog>
+          </div>
+          <div class="contest-log" v-show="selectedLog === '3'">
+            <GameLog :data="logRowData.max"></GameLog>
+          </div>
         </v-card-text>
       </v-card>
     </v-col>
@@ -75,56 +71,24 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 import Chart from 'chart.js/auto';
+import GameLog from './gamelog/GameLog.vue';
+import { useTheme } from 'vuetify';
+
+const vTheme = useTheme();
+
+// use property
+// const primaryColor = vTheme.current.value.colors.primary;
 
 const props = defineProps({ resultData: { type: Object } });
 const selectedBox = ref('1');
 const selectedLog = ref('1');
-const loghtmls = ref({
-  min: '最小値のログが表示されます',
-  rnd: 'ランダムな回のログが表示されます',
-  max: '最大値のログが表示されます',
+const logRowData = ref({
+  min: [],
+  rnd: [],
+  max: [],
 });
-let histgram;
 
-function parseSimulationLog(simulationLog) {
-  let htmlString = '';
-  for (const log of simulationLog.log) {
-    if (log.type == 'newTurn') {
-      const [turn, turnType, score, hp, genki] = log.message.split(':');
-      htmlString += `<div class="log-turn" data-turnType="${turnType}">
-          <div>${turn}ターン目</div>
-          <div class="log-turn-status">
-              <i class="fa-solid fa-star"></i>${score}
-              <i class="fa-solid fa-heart"></i>${hp}
-              <i class="fa-solid fa-shield-halved"></i>${genki}
-          </div>
-      </div>`;
-    } else if (log.type == 'use') {
-      if (log.target == 'card') {
-        htmlString += `<div class="log-block"><div class="log-block-title"><i class="fa-solid fa-clone"></i>スキルカード「${log.message}」</div><div class="log-block-content">`;
-      } else if (log.target == 'grow') {
-        htmlString += `<div class="log-block"><div class="log-block-title"><i class="fa-solid fa-clone"></i>成長「${log.message}」</div><div class="log-block-content">`;
-      } else if (log.target == 'pItem') {
-        htmlString += `<div class="log-block"><div class="log-block-title"><i class="fa-solid fa-chess-rook"></i>Pアイテム「${log.message}」</div><div class="log-block-content">`;
-      } else if (log.target == 'pDrink') {
-        htmlString += `<div class="log-block"><div class="log-block-title"><i class="fa-solid fa-wine-bottle"></i>Pドリンク「${log.message}」</div><div class="log-block-content">`;
-      } else if (log.target == 'status') {
-        htmlString += `<div class="log-block"><div class="log-block-title"><i class="fa-solid fa-forward"></i>ステータス効果「${log.message}」</div><div class="log-block-content">`;
-      } else if (log.target == 'delay') {
-        htmlString += `<div class="log-block"><div class="log-block-title"><i class="fa-solid fa-link"></i>予約効果「${log.message}」</div><div class="log-block-content">`;
-      } else if (log.target == 'rest') {
-        htmlString += `<div class="log-block"><div class="log-block-title"><i class="fa-solid fa-bed"></i>${log.message}</div><div class="log-block-content">`;
-      }
-    } else if (log.type == 'end') {
-      htmlString += '</div></div>';
-    } else if (log.type == 'show') {
-      htmlString += `<div class="log-block"><div class="log-block-title"><i class="fa-solid fa-book-open"></i>${log.message}</div><div class="log-block-content">`;
-    } else {
-      htmlString += `<div>${log.message}</div>`;
-    }
-  }
-  return htmlString;
-}
+let histgram;
 
 watch(
   () => props.resultData,
@@ -148,13 +112,18 @@ watch(
       data[kaikyu]++;
     }
 
-    document.getElementById('result-score-mean').textContent = Math.floor(
-      scoreList.reduce((pre, crt) => pre + crt, 0) / scoreList.length
-    );
-    document.getElementById('result-score-median').textContent =
-      scoreList[Math.floor(scoreList.length / 2)];
-    document.getElementById('result-score-mode').textContent =
+    const mean = Math.floor(scoreList.reduce((pre, crt) => pre + crt, 0) / scoreList.length);
+    const median =
+      scoreList.length % 2
+        ? scoreList[Math.floor(scoreList.length / 2)]
+        : Math.floor((scoreList[scoreList.length / 2 - 1] + scoreList[scoreList.length / 2]) / 2);
+    const mode =
       (minscore + data.reduce((pre, crt, i) => (pre[0] < crt ? [crt, i] : pre), [-1, 0])[1]) * 1000;
+
+    document.getElementById('result-score-mean').textContent = `${mean}`;
+    document.getElementById('result-score-median').textContent = `${median}`;
+    document.getElementById('result-score-mode').textContent = `${mode}`;
+
     if (histgram) {
       histgram.data = {
         labels: new Array(count).fill(0).map((_, i) => (i + minscore) * 1000),
@@ -162,6 +131,8 @@ watch(
           {
             label: `スコア(N=${scoreList.length})`,
             data: data,
+            borderColor: vTheme.current.value.colors.dance,
+            backgroundColor: vTheme.current.value.colors.dance,
           },
         ],
       };
@@ -169,22 +140,43 @@ watch(
     }
 
     // こっからログ
-    const logs = {
-      min: resultData.minLog,
-      rnd: resultData.rndLog,
-      max: resultData.maxLog,
-    };
-    const logKeys = ['min', 'rnd', 'max'];
-    for (const key of logKeys) {
-      loghtmls.value[key] = parseSimulationLog(logs[key]);
-    }
+
+    logRowData.value.min = resultData.minLog.log;
+    logRowData.value.rnd = resultData.rndLog.log;
+    logRowData.value.max = resultData.maxLog.log;
   }
 );
 
 onMounted(() => {
+  // @ts-ignore
   histgram = new Chart(document.getElementById('chart-histgram'), {
     type: 'bar',
   });
+  const changeChartJSColor = () => {
+    const text = vTheme.current.value.colors['text-1'];
+    const border = vTheme.current.value.colors['border-1'];
+    Chart.defaults.color = text;
+    Chart.defaults.borderColor = border;
+    if (histgram.options.scales.x) {
+      histgram.options.scales.x.grid.color = border;
+      histgram.options.scales.x.border.color = border;
+      histgram.options.scales.x.ticks.color = text;
+      histgram.options.scales.x.grid.tickColor = border;
+      histgram.options.scales.y.grid.color = border;
+      histgram.options.scales.y.border.color = border;
+      histgram.options.scales.y.ticks.color = text;
+      histgram.options.scales.y.grid.tickColor = border;
+      histgram.update();
+    }
+  };
+
+  watch(
+    () => vTheme.global.current.value.dark,
+    (isDark) => {
+      changeChartJSColor();
+    }
+  );
+  changeChartJSColor();
 });
 </script>
 
@@ -197,105 +189,29 @@ onMounted(() => {
 }
 .result-table th {
   padding: 3px;
-  background: #e9faf9;
-  border: solid 1px #778ca3;
+  background: rgb(var(--v-theme-bg-2));
+  border: solid 1px rgb(var(--v-theme-border-1));
 }
 .result-table td {
   padding: 3px;
-  border: solid 1px #778ca3;
+  background: rgb(var(--v-theme-surface));
+  border: solid 1px rgb(var(--v-theme-border-1));
 }
 
 .custom-window {
   overflow: hidden;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.custom-btn-toggle {
-  background-color: #f5f5f5;
+  box-shadow: 0 4px 6px rgba(var(--v-theme-text-1), 0.1);
 }
 
 .custom-btn-toggle .v-btn {
-  background-color: transparent;
-  color: #333;
   font-weight: 500;
   text-transform: none;
   letter-spacing: normal;
   height: 48px;
   border-radius: 0;
 }
-
-.custom-btn-toggle .v-btn--selected {
-  background-color: #2196f3;
-  color: white;
-}
-
 .custom-content {
-  background-color: white;
-  min-height: 200px; /* コンテンツの最小高さを設定 */
-  padding: 16px;
-}
-</style>
-<style>
-.contest-log {
-  font-size: 12px;
-}
-
-.contest-log i {
-  vertical-align: 0px;
-  margin-right: 5px;
-}
-
-.log-turn {
-  /* border-top: solid 4px;
-    border-bottom: solid 4px; */
-  padding: 5px 5px;
-  font-size: 1.1em;
-  color: white;
-  font-weight: bold;
-  display: flex;
-}
-
-.log-turn[data-turnType='vocal'] {
-  background: linear-gradient(to right, #f13584, #f461a1);
-}
-.log-turn[data-turnType='dance'] {
-  background: linear-gradient(to right, #1d84ed, #4b9ef0);
-}
-.log-turn[data-turnType='visual'] {
-  background: linear-gradient(to right, #f7b12f, #f8c25d);
-}
-.log-turn > :first-child {
-  margin-right: auto;
-}
-
-.log-block {
-  margin-bottom: 5px;
-  /* padding: 3px; */
-  border: solid 1px #ccc;
-  border-radius: 5px;
-}
-.log-block-title {
-  font-size: 1.1em;
-  padding: 2px 5px;
-  background-color: #eee;
-}
-.log-block-content {
-  padding: 4px 8px;
-}
-.log-block .fa-book-open {
-  color: #28a745;
-}
-.log-block .fa-chess-rook {
-  color: #ff4136;
-}
-.log-block .fa-clone {
-  color: #28a745;
-}
-.log-block .fa-forward {
-  color: #007bff;
-}
-.log-block .fa-link {
-  color: #007bff;
+  min-height: 200px;
 }
 </style>

@@ -15,6 +15,8 @@ export default class ActiveStatusEffect extends StatusEffect {
     super(activeStatusEffect, ['condition', 'effects']);
     /** 値 @type {StatusEffectValue|null} */
     this.value = null;
+    /** ソース名 @type {String} */
+    this.sourceName = '';
     /** 発動タイミング @type {String} */
     this.trigger = activeStatusEffect.trigger;
     if (activeStatusEffect.condition) {

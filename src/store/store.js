@@ -1,5 +1,5 @@
 import { ref, watchEffect, computed, watch } from 'vue';
-import DataLoader from '/simulator/game/data/DataLoader.js';
+import DataLoader from '#/game/data/DataLoader.js';
 
 DataLoader.initialize();
 

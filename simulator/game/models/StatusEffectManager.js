@@ -72,7 +72,7 @@ export default class StatusEffectManager extends Clone {
     throw new Error(`PStatus::load(): ステータス効果"${name}"のデータがありません`);
   }
 
-  add(key, value, options, phase) {
+  add(key, value, options, phase, sourceName) {
     /** ステータス @type {ActiveStatusEffect|PassiveStatusEffect|undefined} */
     let statusEffect = this.passiveStatusEffectMap.get(key);
     if (!statusEffect) {
@@ -100,7 +100,7 @@ export default class StatusEffectManager extends Clone {
       }
     } else if (statusEffect instanceof ActiveStatusEffect) {
       statusEffect.value = new StatusEffectValue(turn, limit, value, isSkipDecay);
-      // console.log('effectssssss', statusEffect.value);
+      statusEffect.sourceName = sourceName ?? statusEffect.name;
     }
   }
 
@@ -119,7 +119,7 @@ export default class StatusEffectManager extends Clone {
     }
   }
 
-  addDelayEffect(name, triggerTurn, _effect) {
+  addDelayEffect(name, sourceName, triggerTurn, _effect) {
     const trigger = 'start_turn';
     const effect = deep_copy(_effect);
     delete effect.delay;
@@ -133,6 +133,7 @@ export default class StatusEffectManager extends Clone {
       condition: `turn==${triggerTurn}`,
       effects: [effect],
     });
+    statusEffect.sourceName = sourceName;
     statusEffect.value = new StatusEffectValue(-1, 1, 1);
     this.registerActive(trigger, statusEffect);
   }

@@ -116,10 +116,11 @@ const select = (item) => {
 }
 
 .v-tooltip :deep(.v-overlay__content) {
-  background-color: rgba(250, 250, 250, 0.9) !important;
-  border: solid 1px black;
-  color: black;
+  background-color: rgba(var(--v-theme-background), 0.85) !important;
+  border: solid 1px rgb(var(--v-border-color));
+  color: var(--v-theme-surface-bright);
 }
+
 .placeholder-icon {
   font-size: 32px;
 }
