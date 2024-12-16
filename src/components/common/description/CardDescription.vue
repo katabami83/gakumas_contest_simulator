@@ -39,7 +39,7 @@ const content = computed(() => {
 }
 .card-classification div:not(:last-of-type)::after {
   content: '/';
-  color: #777;
+  color: rgb(var(--v-theme-text-1));
   margin: 0 0.1em;
 }
 

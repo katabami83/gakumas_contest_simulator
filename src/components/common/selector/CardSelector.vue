@@ -77,9 +77,8 @@ onMounted(() => {
 .card-box {
   width: 100%;
   aspect-ratio: 1;
-  border: solid 2px #999;
+  border: solid 2px rgb(var(--v-theme-border-2));
   border-radius: 6px;
-  background-color: #fafafa;
   display: flex;
   justify-content: center;
   align-items: center;

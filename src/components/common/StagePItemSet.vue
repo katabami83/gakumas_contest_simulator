@@ -24,7 +24,7 @@
 <script setup>
 import { computed } from 'vue';
 import PItemSelector from './selector/PItemSelector.vue';
-import DataLoader from '/simulator/game/data/DataLoader.js';
+import DataLoader from '#/game/data/DataLoader.js';
 import { selectedStagePItems, contestPItemIds } from '@/store/store.js';
 
 const contestPItemsList = computed(() => {

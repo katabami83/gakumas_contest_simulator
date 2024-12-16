@@ -14,7 +14,6 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
 import IdolSelector from '../common/selector/IdolSelector.vue';
 import PItemSet from '../common/PItemSet.vue';
 import CardDeckSet from '../common/CardDeckSet.vue';

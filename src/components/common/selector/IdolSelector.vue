@@ -111,8 +111,7 @@ const selectpIdol = (pIdol) => {
 .pIdol-box {
   width: 80px;
   height: 80px;
-  border: solid 2px #999;
-  background-color: #fafafa;
+  border: solid 2px rgb(var(--v-theme-border-2));
   display: flex;
   justify-content: center;
   align-items: center;

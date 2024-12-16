@@ -41,7 +41,6 @@ const simulate = async () => {
   if (simulationLoading.value) {
     return;
   }
-  simulationLoading.value = true;
   //
   const run_data = getData();
   console.log(run_data);
@@ -49,6 +48,7 @@ const simulate = async () => {
     alert('アイドルを選択してください');
     return;
   }
+  simulationLoading.value = true;
   console.time('run');
   const result = await runWebWorker(run_data);
   console.timeEnd('run');
@@ -134,10 +134,15 @@ async function runWebWorker(data) {
 
 <style>
 .v-container {
-  color: rgb(var(--v-theme-text-1));
   background-color: rgb(var(--v-theme-bg-1));
 }
+.v-container,
+.v-card,
+.v-field__input,
+input {
+  color: rgb(var(--v-theme-text-1));
+}
 .v-theme--dark img {
-  filter: saturate(85%) brightness(70%) contrast(130%);
+  filter: saturate(90%) brightness(75%) contrast(135%);
 }
 </style>

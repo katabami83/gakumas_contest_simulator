@@ -3,11 +3,16 @@
     <div class="log-turn-title" :data-turnType="data.turnType">
       <div>{{ data.turn }}ターン目</div>
       <div>
-        <font-awesome-icon :icon="['fas', 'star']" style="color: #fff574" />{{ data.score }}
-        <font-awesome-icon :icon="['fas', 'heart']" style="color: #03af7a" />{{ data.hp }}
-        <font-awesome-icon :icon="['fas', 'shield-halved']" style="color: #bfecff" />{{
-          data.genki
+        <font-awesome-icon :icon="['fas', 'star']" style="color: rgb(var(--v-theme-yellow-1))" />{{
+          data.score
         }}
+        <font-awesome-icon :icon="['fas', 'heart']" style="color: rgb(var(--v-theme-green-1))" />{{
+          data.hp
+        }}
+        <font-awesome-icon
+          :icon="['fas', 'shield-halved']"
+          style="color: rgb(var(--v-theme-blue-1))"
+        />{{ data.genki }}
       </div>
     </div>
     <div class="log-children">
@@ -34,7 +39,7 @@ const { data } = defineProps({
 .log-turn-title {
   padding: 2px 8px;
   font-size: 1.1em;
-  color: #fafafa;
+  color: rgb(var(--v-theme-text-2));
   font-weight: bold;
   display: flex;
 }

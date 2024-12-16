@@ -19,22 +19,8 @@ import { computed } from 'vue';
 const { entity } = defineProps(['entity']);
 
 const content = computed(() => {
-  // console.log(entity);
   return EntityTranslator.translate(entity);
 });
-
-// const condition = computed(() => {
-//   console.log(
-//     content.value.condition.replaceAll(
-//       '好調',
-//       `<img src="https://katabami83.github.io/gakumas_file/images/icons/icon_free.png" style="height: 1em; vertical-align: middle;" alt="icon" /> 好調`
-//     )
-//   );
-//   return content.value.condition.replaceAll(
-//     '好調',
-//     `<img src="https://katabami83.github.io/gakumas_file/images/icons/icon_free.png" style="height: 1em; vertical-align: text-top;"  alt="icon" /> 好調`
-//   );
-// });
 </script>
 
 <style scoped>
@@ -47,7 +33,7 @@ const content = computed(() => {
 }
 .card-classification div:not(:last-of-type)::after {
   content: '/';
-  color: #777; /* 記号の色 */
+  color: rgb(var(--v-theme-text-1));
   margin: 0 0.1em;
 }
 

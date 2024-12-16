@@ -23,26 +23,31 @@ export default createVuetify({
     themes: {
       light: {
         colors: {
-          vocal: '#ff3366',
-          'vocal-text-1': '#BB2352',
-          'vocal-text-2': '#33081B',
-          'vocal-bg-1': '#ff3366',
-          'vocal-bg-2': '#FF6E9B',
-          'vocal-bg-3': '#FFEAF3',
-          dance: '#0066ff',
-          'dance-text-1': '#0055BB',
-          'dance-text-2': '#001D33',
-          'dance-bg-1': '#0066ff',
-          'dance-bg-2': '#4D9EFF',
-          'dance-bg-3': '#E6F4FF',
-          visual: '#ffcc00',
-          'visual-text-1': '#BB8D00',
-          'visual-text-2': '#332100',
+          vocal: '#f13584',
+          'vocal-text-1': '#E00F69',
+          'vocal-text-2': '#B00C53',
+          'vocal-bg-1': '#f13584',
+          'vocal-bg-2': '#F791BD',
+          'vocal-bg-3': '#FDE7F0',
+          dance: '#1d84ed',
+          'dance-text-1': '#106BC6',
+          'dance-text-2': '#0C5196',
+          'dance-bg-1': '#1d84ed',
+          'dance-bg-2': '#7AB7F4',
+          'dance-bg-3': '#E7F2FD',
+          visual: '#f7b12f',
+          'visual-text-1': '#E69809',
+          'visual-text-2': '#B57807',
           'visual-bg-1': '#ffcc00',
-          'visual-bg-2': '#FFD34D',
-          'visual-bg-3': '#FFF6E6',
+          'visual-bg-2': '#FAD48E',
+          'visual-bg-3': '#FDF5E6',
+
+          'green-1': '#76FF03',
+          'yellow-1': '#FFEA00',
+          'blue-1': '#84ffff',
 
           'text-1': '#222',
+          'text-2': '#fff',
           'border-1': '#eee', // 明るい/メイン
           'border-2': '#aaa', // 暗い/内容など
           'bg-1': '#fcfcfc', // 明るい/メイン
@@ -70,7 +75,12 @@ export default createVuetify({
           'visual-bg-2': '#775400',
           'visual-bg-3': '#775400',
 
-          'text-1': '#ccc',
+          'green-1': '#64DD17',
+          'yellow-1': '#FFAB00',
+          'blue-1': '#00ACC1',
+
+          'text-1': '#ddd',
+          'text-2': '#eee',
           'border-1': '#333', // 暗い/メイン
           'border-2': '#999', // 明るい/内容など
           'bg-1': '#111', // 暗い/メイン

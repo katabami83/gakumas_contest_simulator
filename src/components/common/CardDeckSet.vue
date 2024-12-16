@@ -14,9 +14,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch, watchEffect } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import CardDeck from './CardDeck.vue';
-import DataLoader from '/simulator/game/data/DataLoader';
+import DataLoader from '#/game/data/DataLoader';
 import {
   pIdolPlan,
   pIdolCards,
@@ -24,11 +24,6 @@ import {
   selectedCardsList,
   availableSelectedCardsList,
 } from '@/store/store.js';
-import CardDialog from './dialog/CardDialog.vue';
-
-const dialog = ref(true);
-const selectedItem = ref(null);
-const autoSelect = ref(false);
 
 const cardMap = DataLoader.cardMap;
 
@@ -88,24 +83,6 @@ onMounted(() => {
   watch(selectedCardsList, cardAvailableWatch, { deep: true });
   cardAvailableWatch();
 });
-// const normalCards = computed(() => {
-//   return SkillCardData.getAll().filter(
-//     (item) =>
-//       (item.plan == "free" || item.plan == props.pIdolPlan.plan) && // プラン指定
-//       item.id > 2000000 && // 基本カード削除
-//       String(item.id)[1] != "2" // キャラ固有削除
-//   );
-// });
-
-/*
-入力が必要なもの
-plan<String>: カード選択に必要
-mainUniqueCardIds: <Array<Number>> - メインのユニークカードリスト
-subUniqueCardIds: <Array<Number>> - サブのユニークカードリスト
-
-出力が必要なもの
-selectedCardIds: 選択されているカードリスト
-*/
 </script>
 
 <style scoped></style>

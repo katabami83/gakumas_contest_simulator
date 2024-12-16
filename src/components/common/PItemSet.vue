@@ -13,16 +13,16 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watchEffect, computed } from 'vue';
 import PItemSelector from './selector/PItemSelector.vue';
-import DataLoader from '/simulator/game/data/DataLoader';
-import { selectedIdolPItems, pIdolPItems } from '@/store/store.js';
+import DataLoader from '#/game/data/DataLoader';
+import { selectedIdolPItems, pIdolPItems, pIdolPlan } from '@/store/store.js';
 
 const normalPItems = Array.from(DataLoader.p_item_map)
   .map((item) => item[1])
   .filter(
     (item) =>
       String(item.id)[0] == '3' && // サポートのPアイテム
+      (item.plan == 'free' || item.plan == pIdolPlan.value) && // プラン一致
       item.effects
   );
 </script>
