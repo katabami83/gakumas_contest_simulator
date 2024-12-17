@@ -352,10 +352,9 @@ export default class Player extends Clone {
       const scoreB = getScoreByCardIndex(b);
       if (scoreA < scoreB) {
         return 1;
-      } else if (scoreB > scoreA) {
+      } else {
         return -1;
       }
-      return 0;
     };
 
     const sortedCardIndexes = candidates.toSorted(compareFn);
@@ -518,11 +517,13 @@ export default class Player extends Clone {
           }
       }
       const retainIndexes = this.selectRetainCards(candidateIndexes, value);
-      this.deck.retainCards(retainIndexes);
-      this.log.add(
-        'content',
-        `${retainIndexes.map((index) => this.deck.cards[index].name).join(', ')}を保留に移動`
-      );
+      if (retainIndexes.length > 0) {
+        this.deck.retainCards(retainIndexes);
+        this.log.add(
+          'content',
+          `${retainIndexes.map((index) => this.deck.cards[index].name).join(', ')}を保留に移動`
+        );
+      }
       return;
     }
     if (type == 'move') {

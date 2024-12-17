@@ -12,7 +12,16 @@
             :src="`${baseImageURL}/pItems/pItem_${selectedPItem.id}.webp`"
             class="pItem-image"
             contain
-          ></v-img>
+          >
+            <template v-slot:error>
+              <v-img
+                v-bind="props"
+                :src="`${baseImageURL}/pItems/error.webp`"
+                class="pItem-image"
+                contain
+              ></v-img>
+            </template>
+          </v-img>
         </template>
         <PItemDescription :entity="selectedPItem" />
       </v-tooltip>
