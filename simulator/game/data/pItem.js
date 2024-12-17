@@ -808,6 +808,7 @@ export const data = [
     plan: 'sense',
   },
   { id: 3200220, name: 'カワイイのつくり方' },
+  { id: 3200230, name: 'ほっこりはんぶんこ' },
   // ### ##   ### ##    ## ##   ### ##   ##  ###   ## ##   ### ###
   //  ##  ##   ##  ##  ##   ##   ##  ##  ##   ##  ##   ##   ##  ##
   //  ##  ##   ##  ##  ##   ##   ##  ##  ##   ##  ##        ##
@@ -2115,6 +2116,16 @@ export const data = [
     effects: [{ type: 'genki', value: 2 }],
     limit: 2,
     plan: 'logic',
+  },
+  {
+    id: 330025,
+    name: 'はいぼくせんげん',
+    description: '',
+    trigger: 'start_turn',
+    condition: 'turn_type==dance&指針==5',
+    effects: [{ type: 'score', value: 13 }],
+    limit: 2,
+    plan: 'anomaly',
   },
   //  ## ##    ## ##   ###  ##  #### ##  ### ###   ## ##   #### ##
   // ##   ##  ##   ##    ## ##  # ## ##   ##  ##  ##   ##  # ## ##
