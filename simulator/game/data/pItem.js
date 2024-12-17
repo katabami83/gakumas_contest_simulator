@@ -2118,7 +2118,7 @@ export const data = [
     plan: 'logic',
   },
   {
-    id: 330025,
+    id: 3300250,
     name: 'はいぼくせんげん',
     description: '',
     trigger: 'start_turn',
