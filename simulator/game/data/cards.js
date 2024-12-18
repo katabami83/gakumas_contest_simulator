@@ -6810,13 +6810,13 @@ export const data = [
   },
   {
     id: 4207030,
-    name: '踏切の先に+',
+    name: '踏切の先に',
     type: 'active',
     plan: 'anomaly',
     cost: { type: 'hp', value: -3 },
     condition: '指針==5',
     effects: [
-      { type: 'score', value: 16, times: 3 },
+      { type: 'score', value: 10, times: 3 },
       { type: 'status', target: '指針', value: 2, delay: 1 },
     ],
     limit: 1,

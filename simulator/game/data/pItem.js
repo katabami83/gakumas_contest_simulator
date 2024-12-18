@@ -1555,12 +1555,12 @@ export const data = [
   },
   {
     id: 2307030,
-    name: 'あの日のビニール傘+',
+    name: 'あの日のビニール傘',
     description: '',
     trigger: 'start_turn',
     condition: 'total_mantra>=5',
     effects: [
-      { type: 'status', target: '全力値', value: 8 },
+      { type: 'status', target: '全力値', value: 5 },
       { type: 'retain', target: '踏切の先に', value: 1 },
     ],
     limit: 1,
