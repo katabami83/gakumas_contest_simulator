@@ -22,18 +22,18 @@ export default class Player extends Clone {
    * @param {Object} data - ゲーム設定のデータ
    * @param {Object} data.playerData - playerに関するデータ
    * @param {Object} data.stageData - stageに関するデータ
-   * @param {Array} data.cardIds - カードIDリスト
+   * @param {Array} data.cards - カード
    * @param {Array} data.pItemIds - PアイテムIDリスト
    * @param {Number} data.seed - シード値
    */
-  constructor({ playerData, stageData, cardIds, pItemIds, seed }) {
+  constructor({ playerData, stageData, cards, pItemIds, seed }) {
     super(['parameter', 'log']);
     /** 乱数器 @type {RandomGenerator} */
     this.random = new RandomGenerator(seed ?? 0);
     /** パラメータ @type {Parameter} */
     this.parameter = new Parameter(playerData.vocal, playerData.dance, playerData.visual);
     /** デッキ @type {Deck} */
-    this.deck = new Deck(cardIds, this.random);
+    this.deck = new Deck(cards, this.random);
     /** Pアイテム @type {PItemBundle} */
     this.pItemBundle = new PItemBundle(pItemIds);
     /** ステータス @type {StatusEffectManager} */
@@ -116,10 +116,12 @@ export default class Player extends Clone {
     }
     // 指針
     if (this.status.getValue('全力値') >= 10) {
+      this.log.add('box', `ステータス「指針」:awesome_forward_#007bff`);
       if (this.status.getValue('指針固定') == 0) {
-        this.status.reduce('全力値', 10);
+        this.applyEffect(new Effect({ type: 'status', target: '全力値', value: -10 }), 'status');
       }
       this.applyEffect(new Effect({ type: 'status', target: '指針', value: 5 }), 'status');
+      this.log.add('end');
     }
     this.triggerEvent('start_turn');
     this.triggerEvent('start_turn_interval');
@@ -127,14 +129,7 @@ export default class Player extends Clone {
   }
 
   drawCards(count) {
-    const preHandCards = this.deck.handCardIndexes.length;
-    this.deck.drawCards(count);
-    const postHandCards = this.deck.handCardIndexes.length;
-    if (preHandCards < postHandCards) {
-      this.log.add('content', `カードを${postHandCards - preHandCards}枚引いた`);
-    } else {
-      this.log.add('content', `カードを引けなかった`);
-    }
+    this.deck.drawCards(count, this.log);
   }
 
   /**
@@ -336,7 +331,7 @@ export default class Player extends Clone {
     }
   }
 
-  selectRetainCards(candidates, value) {
+  selectRetainCard(candidates) {
     const getScoreByCardIndex = (cardIndex) => {
       const card = this.deck.cards[cardIndex];
       let score = 0;
@@ -358,14 +353,7 @@ export default class Player extends Clone {
     };
 
     const sortedCardIndexes = candidates.toSorted(compareFn);
-    const result = [];
-    for (let i = 0; i < value; i++) {
-      if (sortedCardIndexes.length - i < 1) {
-        break;
-      }
-      result.push(sortedCardIndexes[i]);
-    }
-    return result;
+    return sortedCardIndexes[0];
   }
 
   /**
@@ -510,19 +498,16 @@ export default class Player extends Clone {
         case '山札捨札':
           candidateIndexes = [].concat(this.deck.drawPileIndexes, this.deck.discardPileIndexes);
           break;
+        case 'カード':
+          candidateIndexes = this.deck.searchIndexesById(value);
+          break;
         default:
-          const index = this.deck.searchIndexByName(target);
-          if (index > -1) {
-            candidateIndexes = [index];
-          }
+          throw new Error(`effect.target=${target}は設定されていません`);
       }
-      const retainIndexes = this.selectRetainCards(candidateIndexes, value);
-      if (retainIndexes.length > 0) {
-        this.deck.retainCards(retainIndexes);
-        this.log.add(
-          'content',
-          `${retainIndexes.map((index) => this.deck.cards[index].name).join(', ')}を保留に移動`
-        );
+      const retainIndex = this.selectRetainCard(candidateIndexes);
+      if (typeof retainIndex !== 'undefined') {
+        this.deck.retainCard(retainIndex);
+        this.log.add('content', `${this.deck.cards[retainIndex].name}を保留に移動`);
       }
       return;
     }
@@ -557,7 +542,9 @@ export default class Player extends Clone {
           this.log.add('content', `低下状態無効：${_value + 1}→${_value}(-1)`);
         } else {
           if (target == '全力値') {
-            this.totalMantra += value;
+            if (value > 0) {
+              this.totalMantra += value;
+            }
           }
           if (target == '指針') {
             const guideline = this.status.getValue(target);
@@ -617,8 +604,16 @@ export default class Player extends Clone {
                   new Effect({ type: 'status', target: 'スキルカード使用数追加', value: 1 }),
                   'status'
                 );
-                this.deck.handCardIndexes.push(...this.deck.retainIndexes);
-                this.deck.retainIndexes = [];
+                if (this.deck.retainIndexes.length > 0) {
+                  this.log.add(
+                    'content',
+                    `${this.deck.retainIndexes
+                      .map((index) => this.deck.cards[index].name)
+                      .join('と')}を手札に加えた`
+                  );
+                  this.deck.handCardIndexes.push(...this.deck.retainIndexes);
+                  this.deck.retainIndexes = [];
+                }
               }
               this.triggerEvent(`change_guideline`);
             }

@@ -15,6 +15,7 @@
         <div class="log-cards-item-text">{{ card[1] }}</div>
       </div>
     </div>
+    <div v-if="data.cards.length == 0" class="empty">手札がありません</div>
   </div>
 </template>
 
@@ -38,6 +39,11 @@ const { data } = defineProps({
   justify-content: space-around;
   overflow: hidden;
   padding: 5px 5px 0px 5px;
+  text-align: center;
+}
+
+.empty {
+  padding-bottom: 5px;
 }
 
 .log-cards-item {

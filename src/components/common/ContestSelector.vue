@@ -32,13 +32,21 @@
       }}</v-list-subheader>
     </template>
   </v-select>
-  <CriteriaLine :vocal="criteria.vocal" :dance="criteria.dance" :visual="criteria.visual" />
+  <CriteriaLine
+    :vocal="criteria.vocal"
+    :dance="criteria.dance"
+    :visual="criteria.visual"
+    :vocalTurn="typeTurns.vocal"
+    :danceTurn="typeTurns.dance"
+    :visualTurn="typeTurns.visual"
+  />
 </template>
 
 <script setup>
 import CriteriaLine from '../common/CriteriaLine.vue';
-import { contestStageId, criteria, contestList } from '@/store/store.js';
+import { contestStageId, criteria, typeTurns, contestList } from '@/store/store.js';
 import { baseImageURL } from '@/store/constant.js';
+import { ref, watch } from 'vue';
 
 const selectList = contestList.reduce((acc, contest) => {
   acc.push({

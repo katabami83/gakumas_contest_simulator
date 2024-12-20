@@ -8,7 +8,8 @@ DataLoader.initialize();
 
 export function run(data, isLog) {
   const input = {
-    cardIds: data.skillCardIds,
+    // cardIds: data.skillCardIds,
+    cards: data.skillCards,
     pItemIds: data.pItemIds,
     stageData: {
       turnCount: data.turn,

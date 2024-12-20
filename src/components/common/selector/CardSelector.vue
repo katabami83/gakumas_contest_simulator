@@ -1,23 +1,36 @@
 <template>
   <div>
     <v-card
-      :class="['card-box', { selected: selectedCard }, { disable: !availableSelectedCard }]"
+      v-if="selectedCard"
+      :class="['card-box', { disable: !availableSelectedCard }]"
       variant="text"
       @click="dialog = true"
     >
-      <v-tooltip v-if="selectedCard" location="top">
+      <v-tooltip location="top">
         <template v-slot:activator="{ props }">
           <v-img
             v-bind="props"
             :src="`${baseImageURL}/cards/card_${selectedCard.id}.webp`"
-            class="card-image"
             contain
           ></v-img>
         </template>
         <CardDescription :card="selectedCard" />
       </v-tooltip>
-      <v-icon v-else class="placeholder-icon">mdi-plus</v-icon>
     </v-card>
+    <v-card v-else class="card-box placeholder" variant="text" @click="dialog = true">
+      <v-icon size="32">mdi-plus</v-icon>
+    </v-card>
+    <v-btn
+      v-if="selectedCard"
+      density="compact"
+      block
+      variant="flat"
+      color="bg-2"
+      class="mt-1"
+      @click="isEdit = true"
+      ><v-icon>mdi-pencil</v-icon></v-btn
+    >
+    <CardEditor v-model:modelValue="selectedCard" v-model:isDialog="isEdit" />
     <CardDialog
       :autoSelect="autoSelect"
       :itemList="cardList"
@@ -32,22 +45,20 @@ import { ref, watch, onMounted } from 'vue';
 import { baseImageURL } from '@/store/constant.js';
 import CardDescription from '../description/CardDescription.vue';
 import CardDialog from '../dialog/CardDialog.vue';
+import CardEditor from '../editor/CardEditor.vue';
+
 const props = defineProps({
-  availableSelectedCard: {
-    type: Boolean,
-  },
-  autoSelect: {
-    type: Boolean,
-  },
-  cardList: {
-    type: Array,
-    require: true,
-  },
+  availableSelectedCard: { type: Boolean },
+  autoSelect: { type: Boolean },
+  cardList: { type: Array, require: true },
 });
 
 const selectedCard = defineModel('selectedCard');
 
 const dialog = ref(false);
+const isEdit = ref(false);
+
+const editItem = () => {};
 
 onMounted(() => {
   const cardListWatch = () => {
@@ -75,60 +86,19 @@ onMounted(() => {
 }
 
 .card-box {
-  width: 100%;
   aspect-ratio: 1;
-  border: solid 2px rgb(var(--v-theme-border-2));
   border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
 }
 
-.card-box.selected {
-  border: none;
+.placeholder {
+  border: solid 2px rgb(var(--v-theme-border-2));
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .disable .v-img {
   filter: brightness(50%);
-}
-
-.card-image {
-  width: 100%;
-  height: 100%;
-}
-
-.card-image :deep(.v-img__img) {
-  pointer-events: none;
-}
-
-.placeholder-icon {
-  font-size: 32px;
-}
-
-.unselected-container {
-  border: solid 2px #999;
-  border-radius: 5px;
-}
-
-.card-grid {
-  display: grid;
-  gap: 8px;
-  grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-}
-
-.card-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.3s;
-  width: 75px;
-  height: 75px;
-}
-
-.card-container.hover {
-  transform: scale(1.08);
-  opacity: 0.5;
 }
 </style>

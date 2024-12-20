@@ -1561,7 +1561,7 @@ export const data = [
     condition: 'total_mantra>=5',
     effects: [
       { type: 'status', target: '全力値', value: 5 },
-      { type: 'retain', target: '踏切の先に', value: 1 },
+      { type: 'retain', target: 'カード', value: 4207030 },
     ],
     limit: 1,
     plan: 'anomaly',
@@ -1574,7 +1574,7 @@ export const data = [
     condition: 'total_mantra>=5',
     effects: [
       { type: 'status', target: '全力値', value: 8 },
-      { type: 'retain', target: '踏切の先に', value: 1 },
+      { type: 'retain', target: 'カード', value: 4207030 },
     ],
     limit: 1,
     plan: 'anomaly',

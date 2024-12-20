@@ -105,6 +105,10 @@ onMounted(() => {
   text-align: center;
 }
 
+.status-input:focus {
+  outline: 1px solid rgb(var(--v-theme-border-2));
+}
+
 .adjusted-value-box {
   padding: 4px;
   border-radius: 100px;

@@ -12,6 +12,7 @@ import Text from './GameLogText.vue';
 import Turn from './GameLogTurn.vue';
 import Box from './GameLogBox.vue';
 import Cards from './GameLogCards.vue';
+import Deck from './GameLogDeck.vue';
 
 const { data } = defineProps(['data']);
 
@@ -55,8 +56,16 @@ const parseLogs = (logs) => {
       }
       stack.push(newNode);
     } else if (log.type === 'cards') {
-      const cardData = log.text.split(':').map((data) => data.split('_'));
+      const cardData = log.text ? log.text.split(':').map((data) => data.split('_')) : [];
       const newCards = { type: Cards, cards: cardData };
+      if (stack.length > 0) {
+        stack[stack.length - 1].children.push(newCards);
+      } else {
+        parsed.push(newCards);
+      }
+    } else if (log.type === 'deck') {
+      const cardData = log.text ? log.text.split(':') : [];
+      const newCards = { type: Deck, cards: cardData };
       if (stack.length > 0) {
         stack[stack.length - 1].children.push(newCards);
       } else {

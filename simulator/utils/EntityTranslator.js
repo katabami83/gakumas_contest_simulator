@@ -62,7 +62,7 @@ export default class EntityTranslator {
       return `カード強化:${target}`;
     }
     if (type == 'retain') {
-      return `${target}のカードを保留`;
+      return `${target}を保留`;
     }
     return this.effectTypeTranslation[type];
   }
@@ -247,8 +247,15 @@ export default class EntityTranslator {
     const effectText = this.translateConditionExpressionEffect(key, value);
     return `${effectText}${signText}`;
   }
-  static translateEffectValue(value, options) {
+  static translateEffectValue(value, options, type, target) {
+    // 後で考える
     let result = value < 0 ? `${value}` : `+${value}`;
+    if (type == 'retain') {
+      if (target == 'カード') {
+        return ` > ${DataLoader.cardMap.get(value)?.name}`;
+      }
+      return '';
+    }
     if (options) {
       let optionTexts = [];
       options.forEach(({ type, target, value }) => {
@@ -285,7 +292,7 @@ export default class EntityTranslator {
     const conditionText = this.translateCondition(condition);
     const delayText = this.translateEffectDelay(delay);
     const effectType = this.translateEffectType(type, target);
-    const valueText = this.translateEffectValue(value, options);
+    const valueText = this.translateEffectValue(value, options, type, target);
     const timesValue = times ? `(${times}回)` : '';
     if (type == 'status' && target == '指針') {
       return `${conditionText}${conditionText ? 'の場合、' : ''}${delayText}指針[${

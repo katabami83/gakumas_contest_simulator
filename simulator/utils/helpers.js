@@ -56,26 +56,29 @@ export class Clone {
   static copy_helper(obj) {
     if (typeof obj !== 'object' || obj === null) {
       return obj;
-    } else if (typeof obj.clone === 'function') {
+    }
+    if (typeof obj.clone === 'function') {
       return obj.clone();
-    } else if (Array.isArray(obj)) {
+    }
+    if (Array.isArray(obj)) {
       return obj.map(Clone.copy_helper);
-    } else if (obj instanceof Map) {
+    }
+    if (obj instanceof Map) {
       const copy = new Map();
       for (let [key, value] of obj.entries()) {
         copy.set(Clone.copy_helper(key), Clone.copy_helper(value));
       }
       return copy;
-    } else if (obj instanceof Set) {
+    }
+    if (obj instanceof Set) {
       const copy = new Set();
       for (let value of obj.values()) {
         copy.add(Clone.copy_helper(value));
       }
       return copy;
-    } else if (obj.constructor !== Object) {
-      throw new Error(
-        `Object of type ${obj.constructor.name} does not have a clone method.`
-      );
+    }
+    if (obj.constructor !== Object) {
+      throw new Error(`Object of type ${obj.constructor.name} does not have a clone method.`);
     } else {
       const copy = {};
       for (let key in obj) {

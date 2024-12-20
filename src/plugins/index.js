@@ -19,10 +19,11 @@ import {
   faForward,
   faMugSaucer,
   faLink,
+  faShuffle,
 } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 library.add(faClock);
-library.add(faStar, faHeart, faShieldHalved, faForward, faMugSaucer, faLink);
+library.add(faStar, faHeart, faShieldHalved, faForward, faMugSaucer, faLink, faShuffle);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 const themeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');

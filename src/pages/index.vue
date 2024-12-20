@@ -50,7 +50,9 @@ const simulate = async () => {
   }
   simulationLoading.value = true;
   console.time('run');
-  const result = await runWebWorker(run_data);
+  const result = await runWebWorker(run_data).catch((error) =>
+    alert(`Worker error: ${error.message} in ${error.filename} at line ${error.lineno}`)
+  );
   console.timeEnd('run');
   //
   simulationLoading.value = false;
@@ -62,7 +64,7 @@ const simulate = async () => {
 
 //
 async function runWebWorker(data) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     let numWorkers = 1;
     if (navigator.hardwareConcurrency) {
       numWorkers = Math.min(navigator.hardwareConcurrency, 16);
@@ -114,6 +116,7 @@ async function runWebWorker(data) {
       worker.onerror = (error) => {
         console.log(`Worker error: ${error.message} in ${error.filename} at line ${error.lineno}`);
         worker.terminate();
+        reject(error);
       };
     }
   });

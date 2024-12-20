@@ -11,11 +11,11 @@ import Growth from './Growth.js';
 export default class Card extends Clone {
   /**
    * Create a card.
-   * @param {Number} id - カードID
+   * @param {Object} card - カード
    */
-  constructor(id) {
+  constructor(card) {
     super(['condition', 'preEffects', 'growths']);
-    const card = DataLoader.getCardById(id);
+    // const card = DataLoader.getCardById(id);
     /** ID @type {Number} */
     this.id = card.id;
     /** 名前 @type {String} */

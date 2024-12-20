@@ -103,12 +103,26 @@ watch(
       return Math.min(a, b);
     };
 
-    const minscore = Math.floor(scoreList.reduce(aryMin) / 1000);
-    const maxscore = Math.floor(scoreList.reduce(aryMax) / 1000);
-    const count = Math.floor(maxscore - minscore) + 1;
-    const data = new Array(count).fill(0);
+    const minScore = scoreList.reduce(aryMin);
+    const maxScore = scoreList.reduce(aryMax);
+
+    const binStep = (() => {
+      const scoreRange = maxScore - minScore;
+      const digit = Number(
+        Number(scoreRange / 25)
+          .toExponential(0)
+          .split('e')[1]
+      );
+      const baseNumber = 10 ** digit;
+      return Math.max(1000, baseNumber);
+    })();
+    const minBin = Math.floor(minScore / binStep);
+    const maxBin = Math.floor(maxScore / binStep);
+
+    const binCount = Math.floor(maxBin - minBin) + 1;
+    const data = new Array(binCount).fill(0);
     for (let i = 0; i < scoreList.length; i++) {
-      const kaikyu = Math.floor(scoreList[i] / 1000) - minscore;
+      const kaikyu = Math.floor(scoreList[i] / binStep) - minBin;
       data[kaikyu]++;
     }
 
@@ -118,7 +132,8 @@ watch(
         ? scoreList[Math.floor(scoreList.length / 2)]
         : Math.floor((scoreList[scoreList.length / 2 - 1] + scoreList[scoreList.length / 2]) / 2);
     const mode =
-      (minscore + data.reduce((pre, crt, i) => (pre[0] < crt ? [crt, i] : pre), [-1, 0])[1]) * 1000;
+      (minBin + data.reduce((pre, crt, i) => (pre[0] < crt ? [crt, i] : pre), [-1, 0])[1]) *
+      binStep;
 
     document.getElementById('result-score-mean').textContent = `${mean}`;
     document.getElementById('result-score-median').textContent = `${median}`;
@@ -126,7 +141,7 @@ watch(
 
     if (histgram) {
       histgram.data = {
-        labels: new Array(count).fill(0).map((_, i) => (i + minscore) * 1000),
+        labels: new Array(binCount).fill(0).map((_, i) => (i + minBin) * binStep),
         datasets: [
           {
             label: `スコア(N=${scoreList.length})`,

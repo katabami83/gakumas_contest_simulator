@@ -2,22 +2,19 @@ import DataLoader from '../data/DataLoader.js';
 import { Clone, createRange, RandomGenerator } from '../../utils/helpers.js';
 import Card from './Card.js';
 import Player from './Player.js';
-import Condition from './Condition.js';
-import { id } from 'vuetify/locale';
-
 /**
  * カード管理クラス
  */
 export default class Deck extends Clone {
   /**
    * Create a deck.
-   * @param {Array<Number>} cardIdList - デッキに入れるカードIDリスト
+   * @param {Array<Number>} cardList - デッキに入れるカードリスト
    * @param {RandomGenerator} random - 乱数器
    */
-  constructor(cardIdList, random) {
+  constructor(cardList, random) {
     super(['random']);
     /** デッキ内全カード @type {Array<Card>} */
-    this.cards = cardIdList.map((id) => new Card(id));
+    this.cards = cardList.map((card) => new Card(card));
     /** 保持のインデックス @type {Array<Number>} */
     this.retainIndexes = [];
     /** 山札のインデックス @type {Array<Number>} */
@@ -37,13 +34,15 @@ export default class Deck extends Clone {
     this.random = random;
   }
 
-  searchIndexByName(name) {
+  searchIndexesById(id) {
+    const fixedId = Math.floor(id / 10) * 10;
+    const indexes = [];
     for (let i = 0; i < this.cards.length; i++) {
-      if (~this.cards[i].name.indexOf(name)) {
-        return i;
+      if (Math.floor(this.cards[i].id / 10) * 10 == fixedId) {
+        indexes.push(i);
       }
     }
-    return -1;
+    return indexes;
   }
 
   /**
@@ -170,14 +169,23 @@ export default class Deck extends Clone {
         }
       }
     }
+
     this.drawPileIndexes = drawPileIndexes.concat(topDrawPileIndexes);
-    this.drawCards(3 - this.handCardIndexes.length);
+    player.log?.add(
+      'deck',
+      this.drawPileIndexes
+        .concat(this.handCardIndexes.toReversed())
+        .map((index) => this.cards[index].id)
+        .reverse()
+        .join(':')
+    );
+    this.drawCards(3 - this.handCardIndexes.length, player.log);
   }
 
   /**
    * Move a card from draw pile to hand.
    */
-  drawCard() {
+  drawCard(log) {
     // 山札が0なら捨て札をシャッフルして山札にする
     if (this.drawPileIndexes.length == 0) {
       if (this.discardPileIndexes.length == 0) {
@@ -186,6 +194,13 @@ export default class Deck extends Clone {
       this.drawPileIndexes = this.discardPileIndexes;
       this.discardPileIndexes = [];
       this.shuffle(this.drawPileIndexes);
+      log?.add(
+        'deck',
+        this.drawPileIndexes
+          .map((index) => this.cards[index].id)
+          .reverse()
+          .join(':')
+      );
     }
     // 手札が5枚未満ならドロー
     // 5枚以上なら捨て札に置く
@@ -195,8 +210,10 @@ export default class Deck extends Clone {
     }
     if (this.handCardIndexes.length < 5) {
       this.handCardIndexes.push(cardIndex);
+      log?.add('content', `${this.cards[cardIndex].name}を引いた`);
     } else {
       this.discardPileIndexes.push(cardIndex);
+      log?.add('content', `${this.cards[cardIndex].name}を捨て札に送った`);
     }
   }
 
@@ -204,12 +221,13 @@ export default class Deck extends Clone {
    * Move cards from draw pile to hand.
    * @param {Number} count - 引く枚数
    */
-  drawCards(count) {
+  drawCards(count, log) {
     if (this.handCardIndexes.length >= 5) {
+      log?.add('content', `カードを引けなかった（手札上限）`);
       return;
     }
     for (let i = 0; i < count; i++) {
-      this.drawCard();
+      this.drawCard(log);
     }
   }
 
@@ -381,12 +399,6 @@ export default class Deck extends Clone {
     if (this.retainIndexes.length > 2) {
       const index = this.retainIndexes.shift();
       this.discardPileIndexes.push(index);
-    }
-  }
-
-  retainCards(indexes) {
-    for (let i = 0; i < indexes.length; i++) {
-      this.retainCard(indexes[i]);
     }
   }
 
