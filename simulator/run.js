@@ -11,6 +11,7 @@ export function run(data, isLog) {
     // cardIds: data.skillCardIds,
     cards: data.skillCards,
     pItemIds: data.pItemIds,
+    stageEffects: data.stageEffects,
     stageData: {
       turnCount: data.turn,
       criteria: data.criteria,

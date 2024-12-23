@@ -12,6 +12,7 @@ import TurnManager from './TurnManager.js';
 import DataLoader from '../data/DataLoader.js';
 import ActiveStatusEffect from './ActiveStatusEffect.js';
 import PItem from './PItem.js';
+import stageEffectManager from './stageEffectManager.js';
 
 /**
  * プレイヤークラス
@@ -25,8 +26,9 @@ export default class Player extends Clone {
    * @param {Array} data.cards - カード
    * @param {Array} data.pItemIds - PアイテムIDリスト
    * @param {Number} data.seed - シード値
+   * @param {Array<Object>} data.stageEffects - ステージ効果
    */
-  constructor({ playerData, stageData, cards, pItemIds, seed }) {
+  constructor({ playerData, stageData, cards, pItemIds, seed, stageEffects }) {
     super(['parameter', 'log']);
     /** 乱数器 @type {RandomGenerator} */
     this.random = new RandomGenerator(seed ?? 0);
@@ -40,6 +42,8 @@ export default class Player extends Clone {
     this.status = new StatusEffectManager();
     /** ターン @type {TurnManager} */
     this.turnManager = new TurnManager(stageData, this.random);
+    /** 応援トラブル @type {stageEffectManager} */
+    this.stageEffectManager = new stageEffectManager(stageEffects);
     /** 体力 @type {Number} */
     this.hp = playerData.hp;
     /** 最大体力 @type {Number} */
@@ -308,9 +312,17 @@ export default class Player extends Clone {
    * @param {String} trigger - トリガータイミング
    */
   triggerEvent(trigger) {
+    const turnItems = this.stageEffectManager.getItem(trigger, this);
     const pItemEvents = this.pItemBundle.getEvents(trigger, this);
     const statusEvents = this.status.getEvents(trigger, this);
     this.deck.triggerEvents(trigger, this, this.log);
+    // ターン効果実行
+    for (let i = 0; i < turnItems.length; i++) {
+      const item = turnItems[i];
+      this.log.add('box', `${item.name}`);
+      item.effects.forEach((effect) => this.applyEffect(effect, 'system', item.name));
+      this.log.add('end');
+    }
     // Pアイテム実行
     for (let i = 0; i < pItemEvents.length; i++) {
       const event = pItemEvents[i];

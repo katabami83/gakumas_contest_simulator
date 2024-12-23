@@ -3,6 +3,7 @@ import { data as status_data } from './status.js';
 import { data as p_item_data } from './pItem.js';
 import { data as contest_data } from './contest.js';
 import { data as p_idol_data } from './pIdol.js';
+import { data as stageEffectData } from './stageEffect.js';
 import { deep_copy } from '../../utils/helpers.js';
 
 export default class DataLoader {
@@ -12,6 +13,7 @@ export default class DataLoader {
   static contest_map = new Map();
   static p_idol_map = new Map();
   static p_idol_characterId_map = new Map();
+  static stageEffectMap = new Map();
 
   static initialize(user_custom_data = {}) {
     this.cardMap = this.convert_to_map(card_data, 'id');
@@ -19,6 +21,8 @@ export default class DataLoader {
     this.status_map = this.convert_to_map(status_data, 'name');
     this.contest_map = this.convert_to_map(contest_data, 'id');
     this.p_idol_map = this.convert_to_map(p_idol_data, 'id');
+    this.stageEffectMap = this.convert_to_map(stageEffectData, 'id');
+
     p_idol_data.forEach((data) => {
       if (!this.p_idol_characterId_map.has(data.character_id)) {
         this.p_idol_characterId_map.set(data.character_id, new Set());
@@ -75,5 +79,9 @@ export default class DataLoader {
 
   static get_contest_stage_by_id(contest_id, stage_id) {
     return deep_copy(this.contest_map.get(contest_id)?.[stage_id]);
+  }
+
+  static getStageEffectById(stageEffectId) {
+    return deep_copy(this.stageEffectMap.get(stageEffectId));
   }
 }

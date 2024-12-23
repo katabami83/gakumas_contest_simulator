@@ -2637,6 +2637,46 @@ export const data = [
     limit: 3,
     plan: 'logic',
   },
+  {
+    id: 4250111,
+    name: '初星バッチ（赤）',
+    description: '',
+    trigger: 'before_play_card',
+    condition: 'card_type==active',
+    effects: [
+      {
+        type: 'status',
+        target: 'パラメータ上昇量増加',
+        value: 10,
+      },
+    ],
+    limit: -1,
+    plan: 'free',
+  },
+  {
+    id: 4250112,
+    name: '初星オブジェ（銀）',
+    description: '',
+    trigger: 'start_turn',
+    condition: '',
+    effects: [
+      { type: 'status', target: '集中', value: 5 },
+      { type: 'status', target: '好調', value: 4 },
+      { type: 'status', target: '消費体力削減', value: 1 },
+    ],
+    limit: 1,
+    plan: 'sense',
+  },
+  {
+    id: 4250113,
+    name: '初星ライト（オレンジ）',
+    description: '',
+    trigger: 'start_turn',
+    condition: '',
+    effects: [{ type: 'status', target: '好印象', value: 10 }],
+    limit: 1,
+    plan: 'logic',
+  },
   //   ####   ### ##    ## ##   ####              ### ##    ## ##     ##     ### ##
   //    ##     ##  ##  ##   ##   ##                ##  ##  ##   ##     ##     ##  ##
   //    ##     ##  ##  ##   ##   ##                ##  ##  ##   ##   ## ##    ##  ##

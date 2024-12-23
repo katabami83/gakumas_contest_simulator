@@ -73,6 +73,7 @@ export const contest = ref(null);
 export const contestStage = ref(null);
 export const contestPlan = ref('');
 export const contestPItemIds = ref([]);
+export const contestStageEffectIds = ref([]);
 
 watch(contestStageId, () => {
   let [contestId, stageId] = contestStageId.value.split(':').map(Number);
@@ -87,6 +88,7 @@ watch(contestStageId, () => {
   paramCalcType.value = contest.value.paramCalcType ?? 'a';
   contestPlan.value = contestStage.value.plan;
   contestPItemIds.value = contestStage.value.stagePItemIds;
+  contestStageEffectIds.value = contestStage.value.stageEffectIds;
 });
 
 const contestParam = urlParams.get('contest_stage');
@@ -269,6 +271,7 @@ export const getData = () => {
       visual: contestStage.value.turnTypes.visual,
     },
     rank: [contest.value.rank[0], contest.value.rank[1], contest.value.rank[2]],
+    stageEffects: contestStageEffectIds.value.map((id) => DataLoader.getStageEffectById(id)),
     firstTurnFirstTypeProb: contestStage.value.firstTurnFirstTypeProb,
     parameter: {
       vocal: status.value.vocal,
