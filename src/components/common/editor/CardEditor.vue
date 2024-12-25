@@ -38,7 +38,7 @@
           <div class="bordered-box">
             <div class="title">開始効果</div>
             <div class="content">
-              {{ JSON.stringify(editableEffect.pre_effects) }}
+              <PreEffectsEditor v-model:preEffects="editableEffect.pre_effects"></PreEffectsEditor>
             </div>
           </div>
           <div class="bordered-box">
@@ -78,11 +78,15 @@
 <script setup>
 import { reactive, computed, watch, ref, onMounted } from 'vue';
 import EffectsEditor from './EffectsEditor.vue';
+import PreEffectsEditor from './PreEffectsEditor.vue';
 
 const modelValue = defineModel('modelValue');
 const isDialog = defineModel('isDialog');
 
 const editableEffect = reactive({ ...JSON.parse(JSON.stringify(modelValue.value)) });
+if (editableEffect.pre_effects === undefined) {
+  editableEffect.pre_effects = [];
+}
 
 const cost = computed(() => [editableEffect.cost]);
 
