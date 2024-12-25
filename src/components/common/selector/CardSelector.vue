@@ -8,10 +8,14 @@
     >
       <v-tooltip location="top">
         <template v-slot:activator="{ props }">
-          <v-img
-            v-bind="props"
-            :src="`${baseImageURL}/cards/card_${selectedCard.id}.webp`"
-            contain
+          <v-img v-bind="props" :src="`${baseImageURL}/cards/card_${selectedCard.id}.webp`" contain
+            ><template v-slot:error>
+              <v-img
+                v-bind="props"
+                :src="`${baseImageURL}/pItems/error.webp`"
+                class="pItem-image"
+                contain
+              ></v-img> </template
           ></v-img>
         </template>
         <CardDescription :card="selectedCard" />

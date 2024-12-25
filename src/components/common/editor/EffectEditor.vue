@@ -28,6 +28,12 @@
         type="Number"
       />
     </div>
+    <div class="bordered-box" v-if="effect.options">
+      <div class="title">オプション</div>
+      <div class="content">
+        <EffectOptionsEditor v-model:options="effect.options"></EffectOptionsEditor>
+      </div>
+    </div>
     <v-text-field label="使用条件" v-model="effect.condition" disabled />
   </v-expansion-panel-text>
 </template>
@@ -35,6 +41,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 import DataLoader from '#/game/data/DataLoader.js';
+import EffectOptionsEditor from './EffectOptionsEditor.vue';
 
 const effect = defineModel('effect');
 
@@ -188,5 +195,22 @@ watch(
 }
 .v-expansion-panel-title {
   min-width: none;
+}
+.bordered-box {
+  position: relative;
+  border: 2px solid rgb(var(--v-theme-border-1));
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.title {
+  position: absolute;
+  top: -12px;
+  left: 16px;
+  background: rgb(var(--v-theme-surface));
+  padding: 0 4px;
+  font-weight: bold;
+  color: rgb(var(--v-theme-text-1));
 }
 </style>

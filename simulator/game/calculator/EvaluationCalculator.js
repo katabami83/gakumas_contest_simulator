@@ -83,13 +83,19 @@ export class EvaluationCalculator {
 
       case '指針':
         if (status.value == 1) {
-          return 0;
+          return (
+            (50 * player.parameter.getScale('average') * player.turnManager.remainTurn) /
+            player.turnManager.turnCount
+          );
         } else if (status.value == 2) {
-          return 0;
+          return (
+            (75 * player.parameter.getScale('average') * player.turnManager.remainTurn) /
+            player.turnManager.turnCount
+          );
         } else if (status.value == 3) {
-          return 0;
+          return 15 * player.parameter.getScale('average');
         } else if (status.value == 4) {
-          return 0;
+          return 20 * player.parameter.getScale('average');
         } else if (status.value == 5) {
           return 0;
         }
@@ -215,6 +221,14 @@ export class EvaluationCalculator {
             .map((turnType) => player.parameter.getScale(turnType) * 4)
             .reduce((total, current) => total + current, 0) * 40
         );
+      case '残り3ターン以内のターン終了時、好印象の180%分のパラメータ上昇':
+        return player.turnManager.turnTypeList
+          .slice(-3)
+          .map(
+            (turnType) =>
+              player.parameter.getScale(turnType) * (player.status.getValue('好印象') * 1.8)
+          )
+          .reduce((total, current) => total + current, 0);
       case '好印象効果':
         return 0;
       case '予約効果':

@@ -379,13 +379,19 @@ export default class Player extends Clone {
     const { type, target, options, delay, condition, times } = effect;
 
     if (delay) {
-      this.status.addDelayEffect(
-        '予約効果',
-        sourceName,
-        this.turnManager.currentTurn + delay,
-        effect
-      );
-      this.log.add('content', `予約効果[${sourceName}]：${delay}ターン後`);
+      if (delay == -1) {
+        this.status.addDelayEffect('予約効果', sourceName, `remain_turn==1`, effect, 'end_turn');
+        this.log.add('content', `予約効果[${sourceName}]：最終ターン終了後`);
+      } else {
+        this.status.addDelayEffect(
+          '予約効果',
+          sourceName,
+          `turn==${this.turnManager.currentTurn + delay}`,
+          effect
+        );
+        this.log.add('content', `予約効果[${sourceName}]：${delay}ターン後`);
+      }
+
       return;
     }
 

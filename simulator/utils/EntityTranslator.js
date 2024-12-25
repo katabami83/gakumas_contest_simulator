@@ -278,15 +278,30 @@ export default class EntityTranslator {
     return result;
   }
   static translateEffectDelay(delay) {
-    if (!delay || delay < 0) {
+    if (!delay || delay == 0) {
       return '';
     }
+    if (delay == -1) {
+      return `最終ターン終了時、`;
+    }
     return `${delay}ターン後、`;
+  }
+  static translateEffectOption({ type, target, value }, effectType) {
+    if (type == 'increase_by_factor') {
+      return `${this.translateTargetName(target)}の${value}倍加算`;
+    }
+    if (type == 'status_coef_bonus') {
+      return `${this.translateTargetName(target)}${value}倍適用`;
+    }
+    if (type == 'increase_by_percentage') {
+      const postfix = value < 0 ? '減少' : '増加';
+      return `${this.translateTargetName(target)}${Math.abs(value)}%分の${effectType}${postfix}`;
+    }
   }
   static translateEffect({ type, target, value, condition, delay, options, times }) {
     const optionTexts = {
       increase_by_factor: '',
-      'increase_by_factor-1': '',
+      status_coef_bonus: '',
       increase_by_percentage: '',
     };
     const conditionText = this.translateCondition(condition);
@@ -305,8 +320,8 @@ export default class EntityTranslator {
           optionTexts[type] = `(${this.translateTargetName(target)}の${value}倍加算)`;
           return;
         }
-        if (type == 'increase_by_factor-1') {
-          optionTexts[type] = `(${this.translateTargetName(target)}${value}倍適用)`;
+        if (type == 'status_coef_bonus') {
+          optionTexts[type] = `(${this.translateTargetName(target)}効果${value}倍適用)`;
           return;
         }
         if (type == 'increase_by_percentage') {
@@ -324,16 +339,16 @@ export default class EntityTranslator {
           conditionText ? 'の場合、' : ''
         }${delayText}${effectType}${valueText}(${optionTexts['increase_by_percentage']}${
           optionTexts['increase_by_factor']
-        }${optionTexts['increase_by_factor-1']}${timesValue})`;
+        }${optionTexts['status_coef_bonus']}${timesValue})`;
       }
       return `${conditionText}${conditionText ? 'の場合、' : ''}${delayText}${
         optionTexts['increase_by_percentage']
-      }${optionTexts['increase_by_factor']}${optionTexts['increase_by_factor-1']}${timesValue}`;
+      }${optionTexts['increase_by_factor']}${optionTexts['status_coef_bonus']}${timesValue}`;
     }
     return `${conditionText}${
       conditionText ? 'の場合、' : ''
     }${delayText}${effectType}${valueText}${optionTexts['increase_by_factor']}${
-      optionTexts['increase_by_factor-1']
+      optionTexts['status_coef_bonus']
     }${timesValue}`;
   }
 }

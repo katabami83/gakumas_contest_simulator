@@ -1,4 +1,4 @@
-import { Clone } from '#/utils/helpers.js';
+import { Clone } from '../../utils/helpers.js';
 import Condition from './Condition.js';
 import Effect from './Effect.js';
 

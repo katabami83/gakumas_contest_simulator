@@ -658,7 +658,7 @@ export const data = [
       {
         type: 'score',
         value: 17,
-        options: [{ type: 'increase_by_factor-1', target: '集中', value: 1.5 }],
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 1.5 }],
       },
     ],
     limit: 1,
@@ -676,7 +676,7 @@ export const data = [
       {
         type: 'score',
         value: 23,
-        options: [{ type: 'increase_by_factor-1', target: '集中', value: 2 }],
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 2 }],
       },
     ],
     limit: 1,
@@ -2086,7 +2086,7 @@ export const data = [
       {
         type: 'score',
         value: 6,
-        options: [{ type: 'increase_by_factor-1', target: '集中', value: 1.5 }],
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 1.5 }],
       },
       { type: 'genki', value: 4, condition: 'hp_per<=50' },
     ],
@@ -2105,7 +2105,7 @@ export const data = [
       {
         type: 'score',
         value: 8,
-        options: [{ type: 'increase_by_factor-1', target: '集中', value: 2 }],
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 2 }],
       },
       { type: 'genki', value: 7, condition: 'hp_per<=50' },
     ],
@@ -2156,7 +2156,7 @@ export const data = [
       {
         type: 'genki',
         value: 2,
-        options: [{ type: 'increase_by_factor-1', target: 'やる気', value: 1.5 }],
+        options: [{ type: 'status_coef_bonus', target: 'やる気', value: 1.5 }],
       },
       {
         type: 'score',
@@ -2180,7 +2180,7 @@ export const data = [
       {
         type: 'genki',
         value: 2,
-        options: [{ type: 'increase_by_factor-1', target: 'やる気', value: 1.5 }],
+        options: [{ type: 'status_coef_bonus', target: 'やる気', value: 1.5 }],
       },
       {
         type: 'score',
@@ -4225,7 +4225,7 @@ export const data = [
       {
         type: 'score',
         value: 17,
-        options: [{ type: 'increase_by_factor-1', target: '集中', value: 2 }],
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 2 }],
       },
     ],
     limit: 1,
@@ -4243,7 +4243,7 @@ export const data = [
       {
         type: 'score',
         value: 24,
-        options: [{ type: 'increase_by_factor-1', target: '集中', value: 2.5 }],
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 2.5 }],
       },
     ],
     limit: 1,
@@ -4784,7 +4784,7 @@ export const data = [
         type: 'score',
         value: 34,
         condition: '集中>=3',
-        options: [{ type: 'increase_by_factor-1', target: '集中', value: 1.5 }],
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 1.5 }],
       },
     ],
     limit: 1,
@@ -6176,6 +6176,42 @@ export const data = [
     allow_duplicate: false,
   },
   {
+    id: 4201050,
+    name: 'これまでもこれからも+',
+    type: 'active',
+    plan: 'sense',
+    cost: { type: 'hp', value: -6 },
+    condition: '',
+    effects: [
+      {
+        type: 'score',
+        value: 55,
+        options: [{ type: 'status_coef_bonus', target: '好調', value: 3 }],
+      },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
+    id: 4201051,
+    name: 'これまでもこれからも+',
+    type: 'active',
+    plan: 'sense',
+    cost: { type: 'hp', value: -6 },
+    condition: '',
+    effects: [
+      {
+        type: 'score',
+        value: 55,
+        options: [{ type: 'status_coef_bonus', target: '好調', value: 3 }],
+      },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
     id: 4202010,
     name: 'それぞれの道',
     type: 'active',
@@ -6267,6 +6303,46 @@ export const data = [
         target: 'スキルカード使用数追加',
         value: 1,
         condition: '好印象>=3',
+      },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
+    id: 4202040,
+    name: '嫌いな自分にバイバイ+',
+    type: 'active',
+    plan: 'sense',
+    cost: { type: 'hp', value: -4 },
+    condition: '',
+    effects: [
+      { type: 'status', target: '集中', value: 7 },
+      {
+        type: 'score',
+        value: 15,
+        delay: -1,
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 2.5 }],
+      },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
+    id: 4202041,
+    name: '嫌いな自分にバイバイ+',
+    type: 'active',
+    plan: 'sense',
+    cost: { type: 'hp', value: -4 },
+    condition: '',
+    effects: [
+      { type: 'status', target: '集中', value: 7 },
+      {
+        type: 'score',
+        value: 15,
+        delay: -1,
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 2.5 }],
       },
     ],
     limit: 1,
@@ -6400,6 +6476,42 @@ export const data = [
     effects: [
       { type: 'status', target: '好印象', value: 5 },
       { type: 'status', target: 'メンタルスキルカード使用時やる気+1', value: 1 },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
+    id: 4203050,
+    name: '自慢のお姉ちゃんだぞ+',
+    type: 'mental',
+    plan: 'logic',
+    cost: { type: 'hp', value: -7 },
+    condition: '',
+    effects: [
+      {
+        type: 'status',
+        target: '残り3ターン以内のターン終了時、好印象の180%分のパラメータ上昇',
+        value: 1,
+      },
+    ],
+    limit: 1,
+    card_cost: 0,
+    allow_duplicate: false,
+  },
+  {
+    id: 4203051,
+    name: '自慢のお姉ちゃんだぞ+',
+    type: 'mental',
+    plan: 'logic',
+    cost: { type: 'hp', value: -7 },
+    condition: '',
+    effects: [
+      {
+        type: 'status',
+        target: '残り3ターン以内のターン終了時、好印象の180%分のパラメータ上昇',
+        value: 1,
+      },
     ],
     limit: 1,
     card_cost: 0,
@@ -6576,7 +6688,7 @@ export const data = [
       {
         type: 'genki',
         value: 4,
-        options: [{ type: 'increase_by_factor-1', target: 'やる気', value: 1.8 }],
+        options: [{ type: 'status_coef_bonus', target: 'やる気', value: 1.8 }],
       },
       {
         type: 'score',
@@ -6599,7 +6711,7 @@ export const data = [
       {
         type: 'genki',
         value: 6,
-        options: [{ type: 'increase_by_factor-1', target: 'やる気', value: 2 }],
+        options: [{ type: 'status_coef_bonus', target: 'やる気', value: 2 }],
       },
       {
         type: 'score',
@@ -6879,7 +6991,7 @@ export const data = [
       {
         type: 'score',
         value: 5,
-        options: [{ type: 'increase_by_factor-1', target: '集中', value: 2.3 }],
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 2.3 }],
       },
       { type: 'genki', value: 6, condition: 'hp_per<=50' },
     ],
@@ -6898,7 +7010,7 @@ export const data = [
       {
         type: 'score',
         value: 8,
-        options: [{ type: 'increase_by_factor-1', target: '集中', value: 2.6 }],
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 2.6 }],
       },
       { type: 'genki', value: 12, condition: 'hp_per<=50' },
     ],
@@ -7029,7 +7141,7 @@ export const data = [
       {
         type: 'genki',
         value: 2,
-        options: [{ type: 'increase_by_factor-1', target: 'やる気', value: 2.3 }],
+        options: [{ type: 'status_coef_bonus', target: 'やる気', value: 2.3 }],
       },
       {
         type: 'score',
@@ -7053,7 +7165,7 @@ export const data = [
       {
         type: 'genki',
         value: 2,
-        options: [{ type: 'increase_by_factor-1', target: 'やる気', value: 2.3 }],
+        options: [{ type: 'status_coef_bonus', target: 'やる気', value: 2.3 }],
       },
       {
         type: 'score',
@@ -7616,7 +7728,7 @@ export const data = [
       {
         type: 'score',
         value: 7,
-        options: [{ type: 'increase_by_factor-1', target: '集中', value: 1.5 }],
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 1.5 }],
       },
       { type: 'status', target: '集中', value: 4 },
     ],
@@ -7635,7 +7747,7 @@ export const data = [
       {
         type: 'score',
         value: 13,
-        options: [{ type: 'increase_by_factor-1', target: '集中', value: 1.5 }],
+        options: [{ type: 'status_coef_bonus', target: '集中', value: 1.5 }],
       },
       { type: 'status', target: '集中', value: 5 },
     ],
@@ -7816,6 +7928,38 @@ export const data = [
     effects: [
       { type: 'status', target: '絶好調', value: 3 },
       { type: 'heal', value: 4 },
+    ],
+    limit: 1,
+    card_cost: 126,
+    allow_duplicate: false,
+  },
+  {
+    id: 4300190,
+    name: '練習再開！',
+    type: 'mental',
+    plan: 'sense',
+    cost: { type: 'hp', value: -3 },
+    condition: '',
+    effects: [
+      { type: 'status', target: '好調', value: 1 },
+      { type: 'exchange', value: 0 },
+      { type: 'status', target: 'スキルカード使用数追加', value: 1 },
+    ],
+    limit: 1,
+    card_cost: 96,
+    allow_duplicate: false,
+  },
+  {
+    id: 4300191,
+    name: '練習再開！',
+    type: 'mental',
+    plan: 'sense',
+    cost: { type: 'hp', value: -3 },
+    condition: '',
+    effects: [
+      { type: 'status', target: '好調', value: 1 },
+      { type: 'exchange', value: 0 },
+      { type: 'status', target: 'スキルカード使用数追加', value: 1 },
     ],
     limit: 1,
     card_cost: 126,

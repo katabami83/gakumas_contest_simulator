@@ -31,7 +31,15 @@
                 :src="`${baseImageURL}/cards/card_${item.id}.webp`"
                 class="item-option"
                 contain
-              ></v-img>
+              >
+                <template v-slot:error>
+                  <v-img
+                    :src="`${baseImageURL}/pItems/error.webp`"
+                    class="card-option"
+                    contain
+                  ></v-img>
+                </template>
+              </v-img>
               <v-tooltip
                 :model-value="true"
                 activator="parent"

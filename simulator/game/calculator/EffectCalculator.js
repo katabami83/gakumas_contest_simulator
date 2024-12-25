@@ -14,6 +14,7 @@ export default class EffectCalculator {
   static calcValue(effect, player) {
     let base_value = effect.value;
 
+    const statusCoefBonus = {};
     // option
     if (effect.options) {
       effect.options.forEach((option) => {
@@ -37,13 +38,19 @@ export default class EffectCalculator {
             add_value_coef = player.status.getValue(option.target);
           }
           base_value += Math.ceil((add_value_coef * option.value) / 100);
+        } else if (option.type == 'status_coef_bonus') {
+          statusCoefBonus[option.target] = option.value;
         }
       });
     }
 
     if (effect.type == 'score') {
-      const concentration_coef = player.status.getValue('集中') + player.status.getValue('熱意');
-      const goodcondition_coef = player.status.has('好調') ? 1.5 : 1;
+      const concentration_coef =
+        Math.ceil(player.status.getValue('集中') * (statusCoefBonus['集中'] ?? 1)) +
+        player.status.getValue('熱意');
+      const goodcondition_coef = player.status.has('好調')
+        ? 1.5 * (statusCoefBonus['好調'] ?? 1)
+        : 1;
       const badcondition_coef = player.status.has('不調') ? 0.67 : 1;
       const greatcondition_coef = player.status.has('絶好調')
         ? player.status.getValue('好調') * 0.1
@@ -76,6 +83,7 @@ export default class EffectCalculator {
           guideline_parameter_rate_increased_coef *
           parameter_rate_increased_coef
       );
+
       return adjust_value;
     }
     if (effect.type == 'genki') {
@@ -83,7 +91,10 @@ export default class EffectCalculator {
         if (player.status.has('元気増加無効')) {
           return 0;
         }
-        return base_value + player.status.getValue('やる気');
+        return (
+          base_value +
+          Math.ceil(player.status.getValue('やる気') * (statusCoefBonus['やる気'] ?? 1))
+        );
       }
       return base_value;
     }

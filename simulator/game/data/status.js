@@ -442,6 +442,28 @@ export const data = [
     isDecay: false,
   },
   {
+    id: 1210090,
+    name: '残り3ターン以内のターン終了時、好印象の180%分のパラメータ上昇',
+    valueType: 'number',
+    type: 'buff',
+    trigger: 'end_turn',
+    condition: 'remain_turn<=3',
+    effects: [
+      {
+        type: 'score',
+        value: 0,
+        options: [
+          {
+            type: 'increase_by_percentage',
+            target: '好印象',
+            value: 180,
+          },
+        ],
+      },
+    ],
+    isDecay: false,
+  },
+  {
     id: 1310010,
     name: '以降、ターン開始時、いずれかの指針の場合、すべてのスキルカードのパラメータ値増加+4',
     valueType: 'number',

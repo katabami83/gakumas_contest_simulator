@@ -119,8 +119,7 @@ export default class StatusEffectManager extends Clone {
     }
   }
 
-  addDelayEffect(name, sourceName, triggerTurn, _effect) {
-    const trigger = 'start_turn';
+  addDelayEffect(name, sourceName, condition, _effect, trigger = 'start_turn') {
     const effect = deep_copy(_effect);
     delete effect.delay;
     delete effect.condition;
@@ -130,7 +129,7 @@ export default class StatusEffectManager extends Clone {
       type: 'buff',
       isDecay: false,
       trigger: trigger,
-      condition: `turn==${triggerTurn}`,
+      condition: condition,
       effects: [effect],
     });
     statusEffect.sourceName = sourceName;
