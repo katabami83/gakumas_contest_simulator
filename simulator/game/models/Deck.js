@@ -167,6 +167,9 @@ export default class Deck extends Clone {
         } else {
           topDrawPileIndexes.push(initCardIndexes[i]);
         }
+      } else {
+        drawPileIndexes.push(initCardIndexes[i]);
+        continue;
       }
     }
 
