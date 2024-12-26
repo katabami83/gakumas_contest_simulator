@@ -239,8 +239,8 @@ export default class Deck extends Clone {
    * @param {Number} cardId - 追加するカードのID
    * @param {String} place - 追加する場所
    */
-  addCard(cardId, place) {
-    const additionalCard = new Card(cardId);
+  addCard(card, place) {
+    const additionalCard = new Card(card);
     this.cards.push(additionalCard);
     const additionalCardIndex = this.cards.length - 1;
     switch (place) {
@@ -269,7 +269,7 @@ export default class Deck extends Clone {
       Number(targetCard.id) % 10 == 0 && // 未強化カード
       DataLoader.cardMap.has(Number(targetCard.id) + 1) // 強化が存在する
     ) {
-      this.cards[index] = new Card(Number(targetCard.id) + 1);
+      this.cards[index] = new Card(DataLoader.cardMap.get(Number(targetCard.id) + 1));
     }
   }
 

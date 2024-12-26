@@ -499,7 +499,7 @@ export default class Player extends Clone {
             String(item.id)[1] != '3' // サポ固有削除)
         );
         const targetCard = targetCardList[Math.floor(this.random.next() * targetCardList.length)];
-        this.deck.addCard(targetCard.id, 'hand');
+        this.deck.addCard(targetCard, 'hand');
         this.log.add('content', `${targetCard.name}を手札に加えた`);
       }
       return;
