@@ -6177,16 +6177,16 @@ export const data = [
   },
   {
     id: 4201050,
-    name: 'これまでもこれからも+',
+    name: 'これまでもこれからも',
     type: 'active',
     plan: 'sense',
     cost: { type: 'hp', value: -6 },
-    condition: '',
+    condition: '好調>=4',
     effects: [
       {
         type: 'score',
-        value: 55,
-        options: [{ type: 'status_coef_bonus', target: '好調', value: 3 }],
+        value: 40,
+        options: [{ type: 'status_coef_bonus', target: '好調', value: 2.5 }],
       },
     ],
     limit: 1,
@@ -6199,7 +6199,7 @@ export const data = [
     type: 'active',
     plan: 'sense',
     cost: { type: 'hp', value: -6 },
-    condition: '',
+    condition: '好調>=4',
     effects: [
       {
         type: 'score',
@@ -6311,13 +6311,13 @@ export const data = [
   },
   {
     id: 4202040,
-    name: '嫌いな自分にバイバイ+',
+    name: '嫌いな自分にバイバイ',
     type: 'active',
     plan: 'sense',
     cost: { type: 'hp', value: -4 },
     condition: '',
     effects: [
-      { type: 'status', target: '集中', value: 7 },
+      { type: 'status', target: '集中', value: 5 },
       {
         type: 'score',
         value: 15,
@@ -6483,7 +6483,7 @@ export const data = [
   },
   {
     id: 4203050,
-    name: '自慢のお姉ちゃんだぞ+',
+    name: '自慢のお姉ちゃんだぞ',
     type: 'active',
     plan: 'logic',
     cost: { type: 'hp', value: -7 },
@@ -6491,7 +6491,7 @@ export const data = [
     effects: [
       {
         type: 'status',
-        target: '残り3ターン以内のターン終了時、好印象の180%分のパラメータ上昇',
+        target: '残り3ターン以内のターン終了時、好印象の140%分のパラメータ上昇',
         value: 1,
       },
     ],

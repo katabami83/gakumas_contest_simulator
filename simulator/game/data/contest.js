@@ -706,7 +706,7 @@ export const data = [
   },
   {
     id: 250110,
-    name: '第15期コンテスト?',
+    name: '第15期コンテスト',
     period: '2024/12/26 - 01/10',
     criteria: {
       vocal: 35,

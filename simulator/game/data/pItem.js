@@ -1007,12 +1007,12 @@ export const data = [
   },
   {
     id: 2301050,
-    name: '向き合う覚悟+',
+    name: '向き合う覚悟',
     description: '',
     trigger: 'after_play_card',
     condition: 'card_id==2011010|card_id==2011011',
     effects: [
-      { type: 'status', target: '好調', value: 2 },
+      { type: 'status', target: '好調', value: 1 },
       { type: 'status', target: 'スキルカード使用数追加', value: 1 },
       { type: 'fixed_direct_hp', value: -1 },
     ],
@@ -1139,12 +1139,12 @@ export const data = [
   },
   {
     id: 2302040,
-    name: '太陽まで届ける歌声+',
+    name: '太陽まで届ける歌声',
     description: '',
     trigger: 'after_play_card',
     condition: 'card_id==2011050|card_id==2011051',
     effects: [
-      { type: 'status', target: '集中', value: 2 },
+      { type: 'status', target: '集中', value: 1 },
       { type: 'status', target: 'スキルカード使用数追加', value: 1 },
       { type: 'fixed_direct_hp', value: -1 },
     ],
@@ -1275,14 +1275,14 @@ export const data = [
   },
   {
     id: 2303050,
-    name: 'あたしだけの一番星+',
+    name: 'あたしだけの一番星',
     description: '',
     trigger: 'after_play_card',
     condition: 'card_id==2022040|card_id==2022041',
     effects: [
-      { type: 'status', target: '好印象', value: 3 },
+      { type: 'status', target: '好印象', value: 2 },
       { type: 'status', target: 'スキルカード使用数追加', value: 1 },
-      { type: 'fixed_direct_hp', value: -1 },
+      { type: 'fixed_direct_hp', value: -2 },
     ],
     limit: 3,
     plan: 'logic',
