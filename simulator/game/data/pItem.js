@@ -1284,7 +1284,7 @@ export const data = [
       { type: 'status', target: 'スキルカード使用数追加', value: 1 },
       { type: 'fixed_direct_hp', value: -1 },
     ],
-    limit: 1,
+    limit: 3,
     plan: 'logic',
   },
   {
@@ -1298,7 +1298,7 @@ export const data = [
       { type: 'status', target: 'スキルカード使用数追加', value: 1 },
       { type: 'fixed_direct_hp', value: -1 },
     ],
-    limit: 1,
+    limit: 3,
     plan: 'logic',
   },
   {
