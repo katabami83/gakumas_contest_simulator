@@ -539,6 +539,12 @@ export default class Player extends Clone {
       } else if (target == 'すべてのパラメータ値増加') {
         this.deck.reinforceCards('all', 'add_score', value);
         this.log.add('content', `全てのカードを強化`);
+      } else if (target == '手札のパラメータ値増加') {
+        this.deck.reinforceCards('handCard', 'add_score', value);
+        this.log.add('content', `手札のカードを強化`);
+      } else if (target == '保留のパラメータ値増加') {
+        this.deck.reinforceCards('retainCard', 'add_score', value);
+        this.log.add('content', `保留のカードを強化`);
       }
       return;
     }

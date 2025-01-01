@@ -92,6 +92,8 @@ export default class Deck extends Clone {
         this.drawPileIndexes,
         this.retainIndexes
       );
+    } else if (position == 'retainCard') {
+      targetCardIndexes = this.retainIndexes;
     }
     targetCardIndexes.forEach((index) => this.reinforceCard(index, type, value));
   }
@@ -236,7 +238,7 @@ export default class Deck extends Clone {
 
   /**
    * Add a card into the deck.
-   * @param {Number} cardId - 追加するカードのID
+   * @param {Number} card - 追加するカード
    * @param {String} place - 追加する場所
    */
   addCard(card, place) {

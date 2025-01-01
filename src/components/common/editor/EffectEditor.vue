@@ -44,6 +44,15 @@ import DataLoader from '#/game/data/DataLoader.js';
 import EffectOptionsEditor from './EffectOptionsEditor.vue';
 
 const effect = defineModel('effect');
+if (!effect.value.options) {
+  effect.value.options = [{ type: 'increase_by_percentage', target: 'score', value: 0 }];
+}
+
+watch(effect, () => {
+  if (!effect.value.options) {
+    effect.value.options = [{ type: 'increase_by_percentage', target: 'score', value: 0 }];
+  }
+});
 
 const valueType = ref('number');
 const valueList = ref([]);
@@ -106,10 +115,18 @@ const statusList = [
   'ターン終了時、好印象が3以上の場合、好印象+3',
   'スキルカード使用時、好印象の30%分パラメータ',
   'スキルカード使用時、好印象の50%分パラメータ',
+  'スキルカード使用時、好印象の50%分パラメータ・好印象+1',
   '元気効果のスキルカード使用後、好印象+1',
   '好印象効果のスキルカード使用後、好印象の30%分のパラメータ',
   '好印象効果のスキルカード使用後、好印象の50%分のパラメータ',
   '以降、ターン開始時、いずれかの指針の場合、すべてのスキルカードのパラメータ値増加+4',
+];
+
+const reinforcementList = [
+  '手札のパラメータ上昇回数増加',
+  'すべてのパラメータ値増加',
+  '手札のパラメータ値増加',
+  '保留のパラメータ値増加',
 ];
 
 const setRule = () => {
@@ -153,6 +170,11 @@ const setRule = () => {
     }
     valueType.value = 'None';
     valueList.value = [];
+    return;
+  }
+  if (effect.value.type == 'reinforcement') {
+    targetType.value = 'select';
+    targetList.value = reinforcementList;
     return;
   }
   targetType.value = 'none';

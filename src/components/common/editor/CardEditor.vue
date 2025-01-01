@@ -83,12 +83,12 @@ import PreEffectsEditor from './PreEffectsEditor.vue';
 const modelValue = defineModel('modelValue');
 const isDialog = defineModel('isDialog');
 
-const editableEffect = reactive({ ...JSON.parse(JSON.stringify(modelValue.value)) });
-if (editableEffect.pre_effects === undefined) {
-  editableEffect.pre_effects = [];
+const editableEffect = ref({ ...JSON.parse(JSON.stringify(modelValue.value)) });
+if (editableEffect.value.pre_effects === undefined) {
+  editableEffect.value.pre_effects = [];
 }
 
-const cost = computed(() => [editableEffect.cost]);
+const cost = computed(() => [editableEffect.value.cost]);
 
 const cardTypeList = [
   { title: 'アクティブ', value: 'active' },
@@ -106,17 +106,19 @@ const cardPlanList = [
 watch(
   () => modelValue.value,
   (newValue) => {
-    Object.assign(editableEffect, newValue);
+    editableEffect.value = { ...JSON.parse(JSON.stringify(modelValue.value)) };
+    if (editableEffect.value.pre_effects === undefined) {
+      editableEffect.value.pre_effects = [];
+    }
   }
 );
 
 const closeDialog = () => {
   isDialog.value = false;
-  Object.assign(editableEffect, JSON.parse(JSON.stringify(modelValue.value)));
 };
 
 const saveEffect = () => {
-  modelValue.value = { ...editableEffect };
+  modelValue.value = { ...editableEffect.value };
   closeDialog();
 };
 </script>

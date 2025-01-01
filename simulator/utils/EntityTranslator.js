@@ -287,6 +287,7 @@ export default class EntityTranslator {
     return `${delay}ターン後、`;
   }
   static translateEffectOption({ type, target, value }, effectType) {
+    if (value == 0) return '';
     if (type == 'increase_by_factor') {
       return `${this.translateTargetName(target)}の${value}倍加算`;
     }
@@ -316,6 +317,7 @@ export default class EntityTranslator {
     }
     if (options) {
       options.forEach(({ type, target, value }) => {
+        if (value == 0) return;
         if (type == 'increase_by_factor') {
           optionTexts[type] = `(${this.translateTargetName(target)}の${value}倍加算)`;
           return;

@@ -382,6 +382,29 @@ export const data = [
     isDecay: false,
   },
   {
+    id: 1210052,
+    name: 'スキルカード使用時、好印象の50%分パラメータ・好印象+1',
+    valueType: 'number',
+    type: 'buff',
+    trigger: 'before_play_card',
+    condition: '',
+    effects: [
+      {
+        type: 'score',
+        value: 0,
+        options: [
+          {
+            type: 'increase_by_percentage',
+            target: '好印象',
+            value: 50,
+          },
+        ],
+      },
+      { type: 'status', target: '好印象', value: 1 },
+    ],
+    isDecay: false,
+  },
+  {
     id: 1210060,
     name: '元気効果のスキルカード使用後、好印象+1',
     valueType: 'number',
