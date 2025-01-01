@@ -1374,6 +1374,38 @@ export const data = [
     plan: 'logic',
   },
   {
+    id: 2304040,
+    name: 'ボクの一部+',
+    description: '',
+    trigger: 'before_play_card',
+    condition:
+      'card_id==2013020&指針==1|card_id==2013020&指針==2|card_id==2013021&指針==1|card_id==2013021&指針==2',
+    effects: [
+      { type: 'draw', value: 2 },
+      { type: 'status', target: '消費体力減少', value: 1 },
+      { type: 'reinforcement', target: 'スターライトのパラメータ値増加', value: 10 },
+      { type: 'fixed_direct_hp', value: -1 },
+    ],
+    limit: 3,
+    plan: 'anomaly',
+  },
+  {
+    id: 2304041,
+    name: 'ボクの一部+',
+    description: '',
+    trigger: 'before_play_card',
+    condition:
+      'card_id==2013020&指針==1|card_id==2013020&指針==2|card_id==2013021&指針==1|card_id==2013021&指針==2',
+    effects: [
+      { type: 'draw', value: 2 },
+      { type: 'status', target: '消費体力減少', value: 1 },
+      { type: 'reinforcement', target: 'スターライトのパラメータ値増加', value: 10 },
+      { type: 'fixed_direct_hp', value: -1 },
+    ],
+    limit: 3,
+    plan: 'anomaly',
+  },
+  {
     id: 2305010,
     name: '夢へのライフログ',
     description: '',
@@ -1890,6 +1922,44 @@ export const data = [
     plan: 'logic',
   },
   {
+    id: 2309050,
+    name: 'きみが見つけた私+',
+    description: '',
+    trigger: 'after_play_card',
+    condition: 'card_id==2023020|card_id==2023021',
+    effects: [
+      {
+        type: 'status',
+        target: 'パラメータ上昇量増加',
+        value: 60,
+        options: [{ type: 'status_option', target: 'turn', value: 2 }],
+      },
+      { type: 'status', target: '全力値', value: 15 },
+      { type: 'fixed_direct_hp', value: -1 },
+    ],
+    limit: 1,
+    plan: 'anomaly',
+  },
+  {
+    id: 2309051,
+    name: 'きみが見つけた私+',
+    description: '',
+    trigger: 'after_play_card',
+    condition: 'card_id==2023020|card_id==2023021',
+    effects: [
+      {
+        type: 'status',
+        target: 'パラメータ上昇量増加',
+        value: 60,
+        options: [{ type: 'status_option', target: 'turn', value: 2 }],
+      },
+      { type: 'status', target: '全力値', value: 15 },
+      { type: 'fixed_direct_hp', value: -1 },
+    ],
+    limit: 1,
+    plan: 'anomaly',
+  },
+  {
     id: 2310010,
     name: '転がり続ける元気の源',
     description: '',
@@ -1971,6 +2041,32 @@ export const data = [
     ],
     limit: 1,
     plan: 'anomaly',
+  },
+  {
+    id: 2311020,
+    name: 'いつかの小さな星+',
+    trigger: 'after_play_card',
+    condition: 'card_id==2011040|card_id==2011041',
+    effects: [
+      { type: 'extra_turn', value: 1 },
+      { type: 'status', target: '絶好調', value: 3 },
+      { type: 'fixed_direct_hp', value: -2 },
+    ],
+    limit: 2,
+    plan: 'sense',
+  },
+  {
+    id: 2311021,
+    name: 'いつかの小さな星+',
+    trigger: 'after_play_card',
+    condition: 'card_id==2011040|card_id==2011041',
+    effects: [
+      { type: 'extra_turn', value: 1 },
+      { type: 'status', target: '絶好調', value: 3 },
+      { type: 'fixed_direct_hp', value: -2 },
+    ],
+    limit: 2,
+    plan: 'sense',
   },
   //  ## ##    ## ##   ### ##             ## ##   ##  ###  ### ##   ### ##    ## ##   ### ##   #### ##
   // ##   ##  ##   ##   ##  ##           ##   ##  ##   ##   ##  ##   ##  ##  ##   ##   ##  ##  # ## ##

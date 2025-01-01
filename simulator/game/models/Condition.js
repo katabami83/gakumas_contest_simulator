@@ -106,6 +106,8 @@ class ConditionItem {
         return player.turnManager.remainTurn;
       case 'total_mantra':
         return player.totalMantra;
+      case 'total_fullpower':
+        return player.totalFullpower;
       default:
         return player.status.getValue(key);
     }

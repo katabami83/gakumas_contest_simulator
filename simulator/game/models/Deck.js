@@ -45,6 +45,16 @@ export default class Deck extends Clone {
     return indexes;
   }
 
+  searchIndexesByFixed(id) {
+    const indexes = [];
+    for (let i = 0; i < this.cards.length; i++) {
+      if (this.cards[i].id == id) {
+        indexes.push(i);
+      }
+    }
+    return indexes;
+  }
+
   /**
    * Shuffle a array.
    * @param {Array<any>} array - シャッフルされる配列
@@ -94,6 +104,8 @@ export default class Deck extends Clone {
       );
     } else if (position == 'retainCard') {
       targetCardIndexes = this.retainIndexes;
+    } else if (position == 'スターライト') {
+      targetCardIndexes = this.searchIndexesById(2013020);
     }
     targetCardIndexes.forEach((index) => this.reinforceCard(index, type, value));
   }
@@ -355,6 +367,51 @@ export default class Deck extends Clone {
     this.handCardIndexes = [];
   }
 
+  moveCard(index) {
+    if (this.handCardIndexes.length >= 5) {
+      return;
+    }
+    const array = [].concat(
+      this.discardPileIndexes.map((value, index) => {
+        return { index: value, pos: 'discard', posIndex: index };
+      }),
+      this.drawPileIndexes.map((value, index) => {
+        return { index: value, pos: 'draw', posIndex: index };
+      })
+    );
+    let indexPosition = null;
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].index == index) {
+        indexPosition = array[i];
+      }
+    }
+    if (!indexPosition) {
+      return;
+    }
+    let target = null;
+    switch (indexPosition.pos) {
+      case 'draw':
+        target = this.drawPileIndexes;
+        break;
+      case 'hand':
+        target = this.handCardIndexes;
+        break;
+      case 'discard':
+        target = this.discardPileIndexes;
+        break;
+      case 'exhausted':
+        target = this.exhaustedPileIndexes;
+        break;
+      case 'retain':
+        target = this.retainIndexes;
+        break;
+    }
+    if (target.splice(indexPosition.posIndex, 1)[0] != index) {
+      throw new Error(`Removed index doesnot match moved index`);
+    }
+    this.handCardIndexes.push(index);
+  }
+
   retainCard(index) {
     const array = [].concat(
       this.handCardIndexes.map((value, index) => {
@@ -365,10 +422,10 @@ export default class Deck extends Clone {
       }),
       this.drawPileIndexes.map((value, index) => {
         return { index: value, pos: 'draw', posIndex: index };
-      }),
-      this.retainIndexes.map((value, index) => {
-        return { index: value, pos: 'retain', posIndex: index };
       })
+      // this.retainIndexes.map((value, index) => {
+      //   return { index: value, pos: 'retain', posIndex: index };
+      // })
     );
     let indexPosition = null;
     for (let i = 0; i < array.length; i++) {

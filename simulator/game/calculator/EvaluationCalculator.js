@@ -201,6 +201,7 @@ export class EvaluationCalculator {
           )
           .reduce((total, current) => total + current, 0);
       case 'スキルカード使用時、好印象の50%分パラメータ':
+      case 'スキルカード使用時、好印象の50%分パラメータ・好印象+1':
       case '好印象効果のスキルカード使用後、好印象の50%分のパラメータ':
         return player.turnManager.turnTypeList
           .slice(player.turnManager.currentTurn)
@@ -221,6 +222,14 @@ export class EvaluationCalculator {
             .map((turnType) => player.parameter.getScale(turnType) * 4)
             .reduce((total, current) => total + current, 0) * 40
         );
+      case '残り3ターン以内のターン終了時、好印象の140%分のパラメータ上昇':
+        return player.turnManager.turnTypeList
+          .slice(-3)
+          .map(
+            (turnType) =>
+              player.parameter.getScale(turnType) * (player.status.getValue('好印象') * 1.4)
+          )
+          .reduce((total, current) => total + current, 0);
       case '残り3ターン以内のターン終了時、好印象の180%分のパラメータ上昇':
         return player.turnManager.turnTypeList
           .slice(-3)

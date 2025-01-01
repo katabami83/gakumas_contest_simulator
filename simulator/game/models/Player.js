@@ -68,6 +68,8 @@ export default class Player extends Clone {
     this.consumedHp = 0;
     /** 累計全力値 @type {Number} */
     this.totalMantra = 0;
+    /** 累計全力回数 @type {Number} */
+    this.totalFullpower = 0;
     /** カード効果でHPを消費するか @type {Boolean} */
     this.isConsumeHpByCard = false;
     /** 効果2回発動 @type {Number} */
@@ -530,6 +532,11 @@ export default class Player extends Clone {
       return;
     }
     if (type == 'move') {
+      let moveCards = [];
+      moveCards = this.deck.searchIndexesByFixed(Number(target));
+      if (moveCards.length == 0) return;
+      const moveCard = moveCards[0];
+      this.deck.moveCard(moveCard);
       return;
     }
     if (type == 'reinforcement') {
@@ -545,6 +552,12 @@ export default class Player extends Clone {
       } else if (target == '保留のパラメータ値増加') {
         this.deck.reinforceCards('retainCard', 'add_score', value);
         this.log.add('content', `保留のカードを強化`);
+      } else if (target == 'スターライトのパラメータ上昇回数増加') {
+        this.deck.reinforceCards('スターライト', 'add_score_times', value);
+        this.log.add('content', `スターライトを強化`);
+      } else if (target == 'スターライトのパラメータ値増加') {
+        this.deck.reinforceCards('スターライト', 'add_score', value);
+        this.log.add('content', `スターライトを強化`);
       }
       return;
     }
@@ -627,6 +640,7 @@ export default class Player extends Clone {
                 `指針：${guidelineTexts[guideline]}→${guidelineTexts[setValue]}`
               );
               if (setValue == 5) {
+                this.totalFullpower += 1;
                 this.applyEffect(
                   new Effect({ type: 'status', target: 'スキルカード使用数追加', value: 1 }),
                   'status'

@@ -51,6 +51,7 @@ export default class EntityTranslator {
     extra_turn: '追加ターン',
     cost: 'コスト',
     retain: '保留',
+    move: '手札に移動',
     reinforcement: 'カード強化',
   };
 
@@ -64,6 +65,9 @@ export default class EntityTranslator {
     if (type == 'retain') {
       return `${target}を保留`;
     }
+    if (type == 'move') {
+      return `${DataLoader.getCardById(Number(target)).name}を手札に移動`;
+    }
     return this.effectTypeTranslation[type];
   }
 
@@ -75,6 +79,7 @@ export default class EntityTranslator {
     currentTurnCardPlayCount: 'このターンのカード使用数',
     consumedHp: '消費した体力',
     totalMantra: '累計全力値',
+    totalFullpower: '累計全力値',
   };
 
   static translateTargetName(target) {
@@ -236,6 +241,9 @@ export default class EntityTranslator {
     }
     if (key == 'total_mantra') {
       return `累計全力値が${value}`;
+    }
+    if (key == 'total_fullpower') {
+      return `累計全力回数が${value}`;
     }
     if (key == '指針') {
       return `指針:${this.guidelineTranslation[value]}`;
