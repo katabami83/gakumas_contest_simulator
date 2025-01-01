@@ -6484,7 +6484,7 @@ export const data = [
   {
     id: 4203050,
     name: '自慢のお姉ちゃんだぞ+',
-    type: 'mental',
+    type: 'active',
     plan: 'logic',
     cost: { type: 'hp', value: -7 },
     condition: '',
@@ -6502,7 +6502,7 @@ export const data = [
   {
     id: 4203051,
     name: '自慢のお姉ちゃんだぞ+',
-    type: 'mental',
+    type: 'active',
     plan: 'logic',
     cost: { type: 'hp', value: -7 },
     condition: '',
