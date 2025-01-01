@@ -566,6 +566,7 @@ export default class Player extends Clone {
           }
           if (target == '指針') {
             const guideline = this.status.getValue(target);
+            let isChangeGuideline = true;
             const guidelineTexts = [
               '無し',
               '温存:段階1',
@@ -608,9 +609,11 @@ export default class Player extends Clone {
               let setValue = value;
               if (guideline == 1 && value == 1) {
                 setValue = 2;
+                isChangeGuideline = false;
               }
               if (guideline == 3 && value == 3) {
                 setValue = 4;
+                isChangeGuideline = false;
               }
               this.status.add('指針', setValue);
               this.log.add(
@@ -633,7 +636,9 @@ export default class Player extends Clone {
                   this.deck.retainIndexes = [];
                 }
               }
-              this.triggerEvent(`change_guideline`);
+              if (isChangeGuideline) {
+                this.triggerEvent(`change_guideline`);
+              }
             }
             return;
           }
